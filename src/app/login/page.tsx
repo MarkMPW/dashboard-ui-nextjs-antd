@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Layout } from "antd";
 import Navbar from "../components/Navbar";
 import Link from "next/link";
@@ -9,16 +9,14 @@ import FooterCompo from "../components/FooterCompo";
 const LoginPage = () => {
   const { Content, Footer } = Layout;
 
-  
-
   return (
     <Layout>
       <Navbar />
       <Content>
         <div className="flex-grow">
           <div className="flex justify-center items-center">
-            <div className="w-[400px] shadow-xl p-10 mt-5 rounded-xl bg-slate-500">
-              <h3 className="text-3xl text-black">Login</h3>
+            <div className="w-[400px] shadow-xl p-10 mt-5 rounded-xl bg-[#cdd7e5]">
+              <h3 className="text-3xl text-[#424b66]">Login</h3>
               <hr className="my-3" />
 
               <form action="">
@@ -44,7 +42,7 @@ const LoginPage = () => {
                   Do not have an acount? Go to{" "}
                   <Link
                     href="/register"
-                    className="text-blue-200 hover:underline"
+                    className="text-blue-700 hover:underline"
                   >
                     Sign Up
                   </Link>{" "}
