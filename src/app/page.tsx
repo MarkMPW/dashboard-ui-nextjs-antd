@@ -1,23 +1,27 @@
-'use client'
+"use client";
 
-import { Typography } from "antd";
+import { Typography, Layout } from "antd";
 import Navbar from "./components/Navbar";
+import FooterCompo from "./components/FooterCompo";
 
 export default function Home() {
-
-  const { Title } = Typography
+  const { Title } = Typography;
+  const { Header, Content, Footer } = Layout;
 
   return (
-    <main>
+    <Layout>
       <Navbar />
-      <div className="flex-grow text-center p-10">
-        <h3 className="text-5xl font-semibold">NextJs Dashboard</h3>
-        <p>Become full-stack developer with NextJs</p>
+      <Content>
+        <div className="flex-grow text-center p-10">
+          <h3 className="text-5xl font-semibold">NextJs Dashboard</h3>
+          <p>Become full-stack developer with NextJs</p>
 
-        <div className="flex justify-center my-10">
-          <Title style={{ color: 'white' }}>Welcome to my project</Title>
+          <div className="flex justify-center my-10">
+            <Title>Welcome to my project</Title>
+          </div>
         </div>
-      </div>
-    </main>
+      </Content>
+      <FooterCompo />
+    </Layout>
   );
 }
