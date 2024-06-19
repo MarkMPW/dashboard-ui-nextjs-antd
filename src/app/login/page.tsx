@@ -9,6 +9,8 @@ import FooterCompo from "../components/FooterCompo";
 const LoginPage = () => {
   const { Content, Footer } = Layout;
 
+  
+
   return (
     <Layout>
       <Navbar />
