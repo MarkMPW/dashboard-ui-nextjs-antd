@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Layout, Input } from "antd";
+import { Layout, Input, Button } from "antd";
 import Navbar from "../components/Navbar";
 import Link from "next/link";
 import FooterCompo from "../components/FooterCompo";
@@ -144,12 +144,13 @@ const RegisterPage = () => {
                   <p className="text-red-500">{formik.errors.confirmPassword}</p>
                 ) : null}
 
-                <button
-                  className="bg-green-500 text-white border py-2 px-3 rounded text-lg my-2"
-                  type="submit"
+                <Button
+                  className="border py-2 px-3 rounded text-lg my-2"
+                  htmlType="submit"
+                  type='primary'
                 >
                   Sign Up
-                </button>
+                </Button>
                 <hr className="my-3" />
 
                 <p>
