@@ -1,13 +1,34 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout } from "antd";
 import Navbar from "../components/Navbar";
 import Link from "next/link";
 import FooterCompo from "../components/FooterCompo";
 
+import { Input, Button } from 'antd'
+
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
 const LoginPage = () => {
   const { Content, Footer } = Layout;
+
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email("Invalid email address").required("Required"),
+      password: Yup.string()
+      .max(20, "Reached the maximum 20")
+      .required("Required"),
+    }),
+    onSubmit: (values) => {
+      console.log(values)
+    }
+  })
 
   return (
     <Layout>
@@ -20,15 +41,23 @@ const LoginPage = () => {
               <hr className="my-3" />
 
               <form action="">
-                <input
+                <Input
                   type="text"
                   className="w-full bg-gray-200 border py-2 px-3 rounded text-lg my-2"
                   placeholder="Enter your Email"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  status={formik.errors.email ? 'error' : ''}
+                  name='email'
                 />
-                <input
+                <Input
                   type="password"
                   className="w-full bg-gray-200 border py-2 px-3 rounded text-lg my-2"
                   placeholder="Enter your Password"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  status={formik.errors.password ? 'error' : ''}
+                  name='password'
                 />
                 <button
                   className="bg-green-500 text-white border py-2 px-3 rounded text-lg my-2"
