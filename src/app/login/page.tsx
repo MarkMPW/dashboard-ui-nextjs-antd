@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from 'next/navigation'
 import { Layout } from "antd";
 import Navbar from "../components/Navbar";
@@ -13,13 +13,17 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import { UserType } from "../register/page";
+import { ThemeContext } from "../components/ThemeContext";
 
 const LoginPage = () => {
 
   const { Content, Footer } = Layout;
   const router = useRouter()
 
+  const { currentUser, setCurrentUser } = useContext(ThemeContext)
+
   const [messageContent, setMessageContent] = useState<{ type: string, content: string }>();
+
 
   const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
@@ -58,8 +62,6 @@ const LoginPage = () => {
           user.email === values.email && user.password === values.password
       );
 
-      console.log('user: ', user)
-
       if (user) {
         console.log("login successful");
 
@@ -68,11 +70,12 @@ const LoginPage = () => {
         await new Promise((resolve) => {
           setTimeout(resolve, 4000);
         });
+        
+        localStorage.setItem('currentUser', JSON.stringify(user))
 
         setLoading(false);
 
         success()
-        localStorage.setItem('currentUser', JSON.stringify(user))
 
         if(user.role === 'user') {
           router.push('/welcome')

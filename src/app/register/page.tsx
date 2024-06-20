@@ -79,7 +79,7 @@ const RegisterPage = () => {
       localStorage.setItem("userData", JSON.stringify(users));
 
       if(values.role === 'user') {
-        router.push('/welcome')
+        router.push('/login')
       } else router.push('/admin')
     },
   });
