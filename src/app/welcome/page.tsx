@@ -1,33 +1,48 @@
-'use client'
+"use client";
 
 import Link from "next/link";
-import React, { useContext, useEffect } from "react";
-import Image from 'next/image'
+import React, { useContext, useEffect, useState } from "react";
+import Image from "next/image";
 import Navbar from "../components/Navbar";
-import { Layout } from 'antd'
+import { Layout } from "antd";
 import FooterCompo from "../components/FooterCompo";
 import { ThemeContext } from "../components/ThemeContext";
+import { get } from "http";
+
+interface AllPostsType {
+  id: number;
+  title: string;
+  imageUrl: string;
+  description: string;
+}
 
 const WelcomePage = () => {
+  const { Content } = Layout;
 
-  const { Content } = Layout
-
-  const { currentUser, setCurrentUser } = useContext(ThemeContext)
+  const { currentUser, setCurrentUser } = useContext(ThemeContext);
+  const [allPosts, setAllPosts] = useState<AllPostsType[]>([]);
 
   useEffect(() => {
     try {
-      const storedUser = localStorage.getItem('currentUser')
-  
-      if(storedUser) {
-        setCurrentUser(JSON.parse(storedUser))
-      } else {
-        setCurrentUser(undefined)
-      }
+      const storedUser = localStorage.getItem("currentUser");
 
-    } catch(error: unknown) {
-      console.log('failed to get currentUser: ', error)
+      if (storedUser) {
+        setCurrentUser(JSON.parse(storedUser));
+      } else {
+        setCurrentUser(undefined);
+      }
+    } catch (error: unknown) {
+      console.log("failed to get currentUser: ", error);
     }
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    const getAllposts = localStorage.getItem("posts");
+
+    if (getAllposts) {
+      setAllPosts(JSON.parse(getAllposts));
+    }
+  }, []);
 
   return (
     <Layout>
@@ -44,15 +59,45 @@ const WelcomePage = () => {
               <div>
                 <Link
                   href="/create"
-                  className="bg-green-500 text-white border py-2 px-3 rounded-md text-lg my-2"
+                  className="bg-green-500 text-white border py-2 px-3 rounded-md my-2"
                 >
                   Create Post
                 </Link>
               </div>
             </div>
 
+            {allPosts.map((post, index) => (
+              <div key={post.id}>
+                <div className="shadow-xl my-10 p-10 rounded-xl border-2">
+                  <h4 className="text-2xl">{post.title}</h4>
+                  <Image
+                    className="my-3 rounded-md"
+                    src={post.imageUrl}
+                    width={300}
+                    height={0}
+                    alt="this is an image"
+                  />
+                  <p>{post.description}</p>
+                  <div className="mt-5">
+                    <Link
+                      className="bg-gray-500 text-white border py-2 px-3 rounded-md text-lg my-2"
+                      href="/edit"
+                    >
+                      Edit
+                    </Link>
+                    <Link
+                      className="bg-red-500 text-white border py-2 px-3 rounded-md text-lg my-2"
+                      href="/delete"
+                    >
+                      Delete
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+
             {/* User Posts Data */}
-            <div>
+            {/* <div>
               <div className="shadow-xl my-10 p-10 rounded-xl border-2">
                 <h4 className="text-2xl">Post title</h4>
                 <Image
@@ -84,7 +129,7 @@ const WelcomePage = () => {
                   Delete
                 </Link>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </Content>
