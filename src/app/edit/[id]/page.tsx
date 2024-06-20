@@ -11,16 +11,14 @@ const EditPage = ({ params }: { params: { id: number } }) => {
 
     const posts = getEditPost ? JSON.parse(getEditPost) : []
 
-    const editPost = posts.find((post: AllPostsType) => post.id === params.id)
+    const editPost = posts.find((post: AllPostsType) => post.id === Number(params.id))
 
     if(editPost) {
       setPost(editPost)
     }
-
-    console.log(posts)
+    
   }, [])
 
-  console.log('post: ', post)
 
   return (
     <div>EditPage</div>
