@@ -15,7 +15,7 @@ const CreatePost = () => {
   let initailNumber = 1
 
   const generateId = () => {
-    return initailNumber + 1
+    return initailNumber++
   }
 
   const { Content } = Layout;
@@ -55,7 +55,7 @@ const CreatePost = () => {
       });
 
       const newPost = {
-        id: generateId(),
+        id: Date.now(),
         title: values.title,
         imageUrl: values.imageUrl,
         description: values.description
