@@ -12,6 +12,12 @@ import * as Yup from "yup";
 
 const CreatePost = () => {
 
+  let initailNumber = 1
+
+  const generateId = () => {
+    return initailNumber + 1
+  }
+
   const { Content } = Layout;
   const route = useRouter()
 
@@ -49,6 +55,7 @@ const CreatePost = () => {
       });
 
       const newPost = {
+        id: generateId(),
         title: values.title,
         imageUrl: values.imageUrl,
         description: values.description
