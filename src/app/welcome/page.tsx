@@ -1,15 +1,27 @@
 'use client'
 
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from 'next/image'
 import Navbar from "../components/Navbar";
 import { Layout } from 'antd'
 import FooterCompo from "../components/FooterCompo";
+import { UserType } from "../register/page";
 
 const WelcomePage = () => {
 
   const { Content } = Layout
+
+  const [currentUser, setCurrentUser] = useState<UserType>()
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('currentUser')
+
+    if(storedUser) {
+      setCurrentUser(JSON.parse(storedUser))
+    }
+  }, [])
+
 
   return (
     <Layout>
@@ -20,7 +32,7 @@ const WelcomePage = () => {
             <div className="flex justify-between">
               <div>
                 <h3 className="text-3xl">Profile</h3>
-                <p>Welcome, John Doe</p>
+                <p>Welcome, {currentUser?.userName}</p>
               </div>
 
               <div>
