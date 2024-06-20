@@ -75,6 +75,8 @@ const WelcomePage = () => {
                     width={300}
                     height={0}
                     alt="this is an image"
+                    priority={false}
+                    quality={75}
                   />
                   <p>{post.description}</p>
                   <div className="mt-5">

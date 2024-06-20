@@ -12,21 +12,20 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const EditPage = ({ params }: { params: { id: number } }) => {
-
-  const route = useRouter()
+  const route = useRouter();
   const { Content } = Layout;
   const [post, setPost] = useState<AllPostsType | null>(null);
 
-  const [openPopup, setOpenPopup] = useState(false)
+  const [openPopup, setOpenPopup] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
   const success = () => {
     messageApi.open({
-      type: 'success',
-      content: 'Edit successfully '
-    })
-  }
+      type: "success",
+      content: "Edit successfully ",
+    });
+  };
 
   const showPopconfirm = () => {
     setOpenPopup(true);
@@ -38,17 +37,16 @@ const EditPage = ({ params }: { params: { id: number } }) => {
 
   const handleOk = () => {
     setConfirmLoading(true);
-    
-    success()
+
+    success();
 
     setTimeout(() => {
       setOpenPopup(false);
       setConfirmLoading(false);
       formik.submitForm().then(() => {
-        route.push('/welcome')
+        route.push("/welcome");
       });
     }, 2000);
-
   };
 
   useEffect(() => {
@@ -65,8 +63,8 @@ const EditPage = ({ params }: { params: { id: number } }) => {
       formik.setValues({
         title: editPost.title,
         imageUrl: editPost.imageUrl,
-        description: editPost.description
-      })
+        description: editPost.description,
+      });
     }
   }, []);
 
@@ -84,24 +82,27 @@ const EditPage = ({ params }: { params: { id: number } }) => {
       description: Yup.string().required("Required"),
     }),
     onSubmit: (values) => {
-
-      const getAllPosts = localStorage.getItem('posts')
-      const posts = getAllPosts ? JSON.parse(getAllPosts) : [];
-
-      const updatePost = posts.map((p: AllPostsType) => 
-        p.id === Number(params.id) ?
-        {
-          ...p,
-          title: values.title,
-          imageUrl: values.imageUrl,
-          description: values.description
-        } : p
-      )
-
-      localStorage.setItem('posts', JSON.stringify(updatePost))
-
+      updatedPost(values)
     },
   });
+
+  const updatedPost = (values: any) => {
+    const getAllPosts = localStorage.getItem("posts");
+    const posts = getAllPosts ? JSON.parse(getAllPosts) : [];
+
+    const updatePost = posts.map((p: AllPostsType) =>
+      p.id === Number(params.id)
+        ? {
+            ...p,
+            title: values.title,
+            imageUrl: values.imageUrl,
+            description: values.description,
+          }
+        : p
+    );
+
+    localStorage.setItem("posts", JSON.stringify(updatePost));
+  };
 
   return (
     <Layout>
@@ -146,7 +147,7 @@ const EditPage = ({ params }: { params: { id: number } }) => {
                 onChange={formik.handleChange}
               ></textarea>
               <Popconfirm
-                title='You want to edit this post?'
+                title="You want to edit this post?"
                 open={openPopup}
                 onCancel={handleCancel}
                 onConfirm={handleOk}
