@@ -58,6 +58,8 @@ const LoginPage = () => {
           user.email === values.email && user.password === values.password
       );
 
+      console.log('user: ', user)
+
       if (user) {
         console.log("login successful");
 
@@ -70,6 +72,7 @@ const LoginPage = () => {
         setLoading(false);
 
         success()
+        localStorage.setItem('currentUser', JSON.stringify(user))
 
         if(user.role === 'user') {
           router.push('/welcome')
