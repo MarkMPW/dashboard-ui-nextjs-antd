@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
+import ThemeProvider from "./components/ThemeContext";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -17,9 +19,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className} suppressHydrationWarning={true}>
-        <div className='flex flex-col min-h-screen'>
-          {children}
-        </div>
+        <ThemeProvider>
+          <div className='flex flex-col min-h-screen'>
+            {children}
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );

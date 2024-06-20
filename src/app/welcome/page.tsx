@@ -1,27 +1,33 @@
 'use client'
 
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import Image from 'next/image'
 import Navbar from "../components/Navbar";
 import { Layout } from 'antd'
 import FooterCompo from "../components/FooterCompo";
-import { UserType } from "../register/page";
+import { ThemeContext } from "../components/ThemeContext";
 
 const WelcomePage = () => {
 
   const { Content } = Layout
 
-  const [currentUser, setCurrentUser] = useState<UserType>()
+  const { currentUser, setCurrentUser } = useContext(ThemeContext)
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('currentUser')
+    try {
+      const storedUser = localStorage.getItem('currentUser')
+  
+      if(storedUser) {
+        setCurrentUser(JSON.parse(storedUser))
+      } else {
+        setCurrentUser(undefined)
+      }
 
-    if(storedUser) {
-      setCurrentUser(JSON.parse(storedUser))
+    } catch(error: unknown) {
+      console.log('failed to get currentUser: ', error)
     }
   }, [])
-
 
   return (
     <Layout>
