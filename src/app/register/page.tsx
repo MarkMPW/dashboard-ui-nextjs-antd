@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-interface UserType {
+export interface UserType {
   userName: string;
   email: string;
   password: string;
@@ -52,25 +52,49 @@ const RegisterPage = () => {
         .required("Required"),
     }),
     onSubmit: (values) => {
+
+      const storedUsers = localStorage.getItem('userData')
+
+      let users = [];
+      if (storedUsers) {
+        try {
+          users = JSON.parse(storedUsers);
+          if (!Array.isArray(users)) {
+            users = [];
+          }
+        } catch (e) {
+          users = [];
+        }
+      }
+
+      users.push({
+        userName: values.userName,
+        email: values.email,
+        password: values.password,
+        role: values.role
+      })
+
       console.log("user from formik: ", values);
-      localStorage.setItem("userData", JSON.stringify(values));
+      
+      localStorage.setItem("userData", JSON.stringify(users));
+
       if(values.role === 'user') {
         router.push('/welcome')
       } else router.push('/admin')
     },
   });
 
-  const handleChange = (name: string, value: string) => {
-    setUser((prevUser) => ({
-      ...prevUser,
-      [name]: value,
-    }));
-  };
+  // const handleChange = (name: string, value: string) => {
+  //   setUser((prevUser) => ({
+  //     ...prevUser,
+  //     [name]: value,
+  //   }));
+  // };
 
-  const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    localStorage.setItem("userData", JSON.stringify(user));
-  };
+  // const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   localStorage.setItem("userData", JSON.stringify(user));
+  // };
 
   return (
     <Layout>
