@@ -3,20 +3,30 @@
 import FooterCompo from "@/app/components/FooterCompo";
 import Navbar from "@/app/components/Navbar";
 import { AllPostsType } from "@/app/welcome/page";
-import { Button, Input, Layout, Popconfirm } from "antd";
+import { Button, Input, Layout, Popconfirm, message } from "antd";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const EditPage = ({ params }: { params: { id: number } }) => {
 
+  const route = useRouter()
   const { Content } = Layout;
   const [post, setPost] = useState<AllPostsType | null>(null);
 
   const [openPopup, setOpenPopup] = useState(false)
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const success = () => {
+    messageApi.open({
+      type: 'success',
+      content: 'Edit successfully '
+    })
+  }
 
   const showPopconfirm = () => {
     setOpenPopup(true);
@@ -29,11 +39,16 @@ const EditPage = ({ params }: { params: { id: number } }) => {
   const handleOk = () => {
     setConfirmLoading(true);
     
+    success()
+
     setTimeout(() => {
       setOpenPopup(false);
       setConfirmLoading(false);
-      formik.submitForm();
+      formik.submitForm().then(() => {
+        route.push('/welcome')
+      });
     }, 2000);
+
   };
 
   useEffect(() => {
@@ -69,13 +84,29 @@ const EditPage = ({ params }: { params: { id: number } }) => {
       description: Yup.string().required("Required"),
     }),
     onSubmit: (values) => {
-      console.log('new values: ', values)
+
+      const getAllPosts = localStorage.getItem('posts')
+      const posts = getAllPosts ? JSON.parse(getAllPosts) : [];
+
+      const updatePost = posts.map((p: AllPostsType) => 
+        p.id === Number(params.id) ?
+        {
+          ...p,
+          title: values.title,
+          imageUrl: values.imageUrl,
+          description: values.description
+        } : p
+      )
+
+      localStorage.setItem('posts', JSON.stringify(updatePost))
+
     },
   });
 
   return (
     <Layout>
       <Navbar />
+      {contextHolder}
       <Content>
         <div className="flex-grow">
           <div className="container mx-auto shadow-xl my-10 p-10 rounded-xl">
