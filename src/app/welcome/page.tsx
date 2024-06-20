@@ -44,7 +44,7 @@ const WelcomePage = () => {
               <div>
                 <Link
                   href="/create"
-                  className="bg-green-500 text-white border py-2 px-3 rounded-md text-lg my-2"
+                  className="bg-green-500 text-white border py-2 px-3 rounded-md my-2"
                 >
                   Create Post
                 </Link>
@@ -52,7 +52,7 @@ const WelcomePage = () => {
             </div>
 
             {/* User Posts Data */}
-            <div>
+            {/* <div>
               <div className="shadow-xl my-10 p-10 rounded-xl border-2">
                 <h4 className="text-2xl">Post title</h4>
                 <Image
@@ -84,7 +84,7 @@ const WelcomePage = () => {
                   Delete
                 </Link>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </Content>
