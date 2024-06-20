@@ -7,9 +7,8 @@ import Navbar from "../components/Navbar";
 import { Layout } from "antd";
 import FooterCompo from "../components/FooterCompo";
 import { ThemeContext } from "../components/ThemeContext";
-import { get } from "http";
 
-interface AllPostsType {
+export interface AllPostsType {
   id: number;
   title: string;
   imageUrl: string;
@@ -76,12 +75,14 @@ const WelcomePage = () => {
                     width={300}
                     height={0}
                     alt="this is an image"
+                    priority={false}
+                    quality={75}
                   />
                   <p>{post.description}</p>
                   <div className="mt-5">
                     <Link
                       className="bg-gray-500 text-white border py-2 px-3 rounded-md text-lg my-2"
-                      href="/edit"
+                      href={`/edit/${post.id}`}
                     >
                       Edit
                     </Link>
