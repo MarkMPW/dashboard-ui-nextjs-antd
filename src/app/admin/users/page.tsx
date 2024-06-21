@@ -1,11 +1,10 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import UserTable from '../components/UserTable'
-import { UserType } from '@/app/register/page'
+import UserTable, { TableType } from '../components/UserTable'
 
 const ManageUserPage = () => {
-  const [userData, setUserData] = useState<UserType[]>([])
+  const [userData, setUserData] = useState<TableType[]>([])
 
   useEffect(() => {
     const getUsers = localStorage.getItem('userData')

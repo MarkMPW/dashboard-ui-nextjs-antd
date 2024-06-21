@@ -3,16 +3,16 @@
 import React, { useEffect, useState } from 'react'
 
 import { Table, TableProps } from 'antd'
-import { UserType } from '@/app/register/page'
 
-interface TableType {
+export interface TableType {
   id: number
   userName: string
   email: string
   password: string
 }
 
-const UserTable = ({ dataSource }: { dataSource: UserType[] }) => {
+
+const UserTable = ({ dataSource }: { dataSource: TableType[] }) => {
 
   const columns: TableProps<TableType>['columns'] = [
     {

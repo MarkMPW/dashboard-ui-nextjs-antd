@@ -11,6 +11,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 export interface UserType {
+  id: number,
   userName: string;
   email: string;
   password: string;
@@ -22,14 +23,6 @@ const RegisterPage = () => {
 
   const { Content, Footer } = Layout;
   const router = useRouter()
-
-  const [user, setUser] = useState<UserType>({
-    userName: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    role: "user",
-  });
 
   const formik = useFormik({
     initialValues: {
@@ -68,6 +61,7 @@ const RegisterPage = () => {
       }
 
       users.push({
+        id: Date.now(),
         userName: values.userName,
         email: values.email,
         password: values.password,
