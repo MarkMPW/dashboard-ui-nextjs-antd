@@ -106,7 +106,6 @@ const EditPage = ({ params }: { params: { id: number } }) => {
 
   return (
     <Layout>
-      <Navbar />
       {contextHolder}
       <Content>
         <div className="flex-grow">
@@ -167,7 +166,6 @@ const EditPage = ({ params }: { params: { id: number } }) => {
           </div>
         </div>
       </Content>
-      <FooterCompo />
     </Layout>
   );
 };

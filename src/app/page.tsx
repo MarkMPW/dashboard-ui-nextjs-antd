@@ -4,13 +4,13 @@ import { Typography, Layout } from "antd";
 import Navbar from "./components/Navbar";
 import FooterCompo from "./components/FooterCompo";
 
+const { Title } = Typography;
+const { Header, Content, Footer } = Layout;
+
 export default function Home() {
-  const { Title } = Typography;
-  const { Header, Content, Footer } = Layout;
 
   return (
-    <Layout>
-      <Navbar />
+    <>
       <Content>
         <div className="flex-grow text-center p-10">
           <h3 className="text-5xl font-semibold">NextJs Dashboard</h3>
@@ -21,7 +21,6 @@ export default function Home() {
           </div>
         </div>
       </Content>
-      <FooterCompo />
-    </Layout>
+    </>
   );
 }

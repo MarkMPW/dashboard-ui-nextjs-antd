@@ -30,7 +30,6 @@ const Navbar = () => {
                 width={100} 
                 height={100} 
                 alt="NextJs Logo" 
-                style={{ width: 'auto', height: 'auto' }} 
               />
             </Link>
           </div>

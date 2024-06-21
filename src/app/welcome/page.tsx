@@ -71,7 +71,6 @@ const WelcomePage = () => {
 
   return (
     <Layout>
-      <Navbar />
       <Content>
         <div className="flex-grow p-2">
           <div className="container mx-auto shadow-xl my-10 p-10 rounded-xl border-2 border-red-200 ">
@@ -168,7 +167,6 @@ const WelcomePage = () => {
           </div>
         </div>
       </Content>
-      <FooterCompo />
     </Layout>
   );
 };

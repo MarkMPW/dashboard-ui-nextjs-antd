@@ -98,7 +98,6 @@ const RegisterPage = () => {
 
   return (
     <Layout>
-      <Navbar />
       <Content>
         <div className="flex-grow">
           <div className="flex justify-center items-center">
@@ -189,7 +188,6 @@ const RegisterPage = () => {
           </div>
         </div>
       </Content>
-      <FooterCompo />
     </Layout>
   );
 };
