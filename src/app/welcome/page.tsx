@@ -7,7 +7,6 @@ import Navbar from "../components/Navbar";
 import { Layout, Popconfirm, Button } from "antd";
 import FooterCompo from "../components/FooterCompo";
 import { ThemeContext } from "../components/ThemeContext";
-
 export interface AllPostsType {
   id: number;
   title: string;

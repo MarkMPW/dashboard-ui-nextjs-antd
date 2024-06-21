@@ -37,7 +37,7 @@ const RegisterPage = () => {
       email: "",
       password: "",
       confirmPassword: "",
-      role: 'user'
+      role: 'admin'
     },
     validationSchema: Yup.object({
       userName: Yup.string()
