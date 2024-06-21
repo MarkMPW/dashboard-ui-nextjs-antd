@@ -17,7 +17,7 @@ const Sidebar = () => {
       label: 'Dashboard',
     },
     {
-      key: '/users',
+      key: '/admin/users',
       label: 'Users'
     },
     {
@@ -26,7 +26,7 @@ const Sidebar = () => {
       key: 'divider1'
     },
     {
-      key: '/posts',
+      key: '/admin/posts',
       label: 'Posts'
     },
   ]
@@ -38,7 +38,7 @@ const Sidebar = () => {
         defaultSelectedKeys={["/admin"]}
         items={items}
         style={{ height: '100%', borderRight: 0 }}
-        // onClick={({ key }) => route.push(key)}
+        onClick={({ key }) => route.push(key)}
       />
     </Sider>
   )
