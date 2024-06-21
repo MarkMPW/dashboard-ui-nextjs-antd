@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 
 import { Menu, Layout } from 'antd'
 
@@ -10,6 +10,7 @@ const { Sider } = Layout
 const Sidebar = () => {
 
   const route = useRouter()
+  const pathname = usePathname()
 
   const items: any = [
     {
@@ -35,7 +36,8 @@ const Sidebar = () => {
     <Sider width={200} className='h-screen'>
       <Menu
         mode='vertical'
-        defaultSelectedKeys={["/admin"]}
+        // defaultSelectedKeys={["/admin"]}
+        selectedKeys={[pathname]}
         items={items}
         style={{ height: '100%', borderRight: 0 }}
         onClick={({ key }) => route.push(key)}

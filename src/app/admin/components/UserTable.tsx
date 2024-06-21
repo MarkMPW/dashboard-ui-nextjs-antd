@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 
-import { Table, TableProps } from 'antd'
+import { Space, Table, TableProps, Button } from 'antd'
 
 export interface TableType {
   id: number
@@ -34,6 +34,16 @@ const UserTable = ({ dataSource }: { dataSource: TableType[] }) => {
       title: 'password',
       dataIndex: 'password',
       key: 'password'
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (_, record) => (
+        <Space>
+          <Button type='primary'>Edit</Button>
+          <Button danger type='primary'>Delete</Button>
+        </Space>
+      )
     }
   ]
 
@@ -41,6 +51,8 @@ const UserTable = ({ dataSource }: { dataSource: TableType[] }) => {
     <Table 
       columns={columns}
       dataSource={dataSource}
+      rowKey='id'
+      pagination={{ defaultPageSize: 5}}
     />
   )
 }
