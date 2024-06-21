@@ -16,11 +16,21 @@ export interface AllPostsType {
 }
 
 const WelcomePage = () => {
-
   const { Content } = Layout;
 
   const { currentUser, setCurrentUser } = useContext(ThemeContext);
   const [allPosts, setAllPosts] = useState<AllPostsType[]>([]);
+  const [openPopup, setOpenPopup] = useState<number | null>(null);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const showPopconfirm = (id: number) => {
+    setOpenPopup(id);
+  };
+
+  const handleCancel = () => {
+    console.log("Clicked cancel button");
+    setOpenPopup(null);
+  };
 
   useEffect(() => {
     try {
@@ -45,13 +55,19 @@ const WelcomePage = () => {
   }, []);
 
   const handleDeletePost = (id: number) => {
-    const deletePost = allPosts.filter((post: AllPostsType) => post.id !== id)
+    setConfirmLoading(true);
 
-    localStorage.setItem('posts', JSON.stringify(deletePost))
+    setTimeout(() => {
+      const deletePost = allPosts.filter(
+        (post: AllPostsType) => post.id !== id
+      );
 
-    window.location.reload()
-
-  }
+      localStorage.setItem("posts", JSON.stringify(deletePost));
+      setOpenPopup(null);
+      setConfirmLoading(false);
+      window.location.reload();
+    }, 2000);
+  };
 
   return (
     <Layout>
@@ -80,13 +96,13 @@ const WelcomePage = () => {
                 <div className="shadow-xl my-10 p-10 rounded-xl border-2">
                   <h4 className="text-2xl">{post.title}</h4>
                   <Image
-                    className="my-3 rounded-md"
+                    className="my-3 rounded-md w-auto h-auto"
                     src={post.imageUrl}
                     width={300}
                     height={0}
                     alt="this is an image"
-                    priority={false}
-                    quality={75}
+                    priority={true}
+                    quality={50}
                   />
                   <p>{post.description}</p>
                   <div className="mt-5">
@@ -96,10 +112,16 @@ const WelcomePage = () => {
                     >
                       Edit
                     </Link>
-                    <Popconfirm title="Do you want to delete">
-                      <Button 
+                    <Popconfirm
+                      title="Do you want to delete"
+                      open={openPopup === post?.id}
+                      onCancel={handleCancel}
+                      okButtonProps={{ loading: confirmLoading }}
+                      onConfirm={() => handleDeletePost(post?.id)}
+                    >
+                      <Button
                         className="bg-red-500 py-5 px-3 rounded-md text-lg my-2"
-                        onClick={()=> handleDeletePost(post.id)}
+                        onClick={() => showPopconfirm(post?.id)}
                       >
                         Delete
                       </Button>
