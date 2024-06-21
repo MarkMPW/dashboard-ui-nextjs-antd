@@ -66,17 +66,24 @@ const LoginPage = () => {
         console.log("login successful");
 
         setLoading(true);
-
+        
         await new Promise((resolve) => {
           setTimeout(resolve, 4000);
         });
         
+        message.success('Login successful!', 2, () => {
+          if(user.role === 'user') {
+            router.push('/welcome');
+          } else if (user.role === 'admin') {
+            router.push('/admin');
+          }
+        });
+
         localStorage.setItem('currentUser', JSON.stringify(user))
         localStorage.setItem('posts', JSON.stringify([]))
 
         setLoading(false);
 
-        success()
 
         if(user.role === 'user') {
           router.push('/welcome')

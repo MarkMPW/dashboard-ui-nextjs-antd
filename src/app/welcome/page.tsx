@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import Navbar from "../components/Navbar";
-import { Layout } from "antd";
+import { Layout, Popconfirm, Button } from "antd";
 import FooterCompo from "../components/FooterCompo";
 import { ThemeContext } from "../components/ThemeContext";
 
@@ -16,6 +16,7 @@ export interface AllPostsType {
 }
 
 const WelcomePage = () => {
+
   const { Content } = Layout;
 
   const { currentUser, setCurrentUser } = useContext(ThemeContext);
@@ -42,6 +43,15 @@ const WelcomePage = () => {
       setAllPosts(JSON.parse(getAllposts));
     }
   }, []);
+
+  const handleDeletePost = (id: number) => {
+    const deletePost = allPosts.filter((post: AllPostsType) => post.id !== id)
+
+    localStorage.setItem('posts', JSON.stringify(deletePost))
+
+    window.location.reload()
+
+  }
 
   return (
     <Layout>
@@ -86,12 +96,14 @@ const WelcomePage = () => {
                     >
                       Edit
                     </Link>
-                    <Link
-                      className="bg-red-500 text-white border py-2 px-3 rounded-md text-lg my-2"
-                      href="/delete"
-                    >
-                      Delete
-                    </Link>
+                    <Popconfirm title="Do you want to delete">
+                      <Button 
+                        className="bg-red-500 py-5 px-3 rounded-md text-lg my-2"
+                        onClick={()=> handleDeletePost(post.id)}
+                      >
+                        Delete
+                      </Button>
+                    </Popconfirm>
                   </div>
                 </div>
               </div>
