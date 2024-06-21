@@ -65,7 +65,8 @@ const CreatePost = () => {
 
       setLoading(false);
 
-      success()
+      // success()
+      message.success('Post success', 2)
 
       posts.push(newPost)
 

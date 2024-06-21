@@ -12,12 +12,12 @@ const Navbar = () => {
   const { currentUser, setCurrentUser } = useContext(ThemeContext);
 
   const handleLogout = () => {
-    localStorage.removeItem('currentUser'),
-    setTimeout(() => {
-      setCurrentUser(undefined)
-      route.push('/')
-    })
-  }
+    localStorage.removeItem("currentUser"),
+      setTimeout(() => {
+        setCurrentUser(undefined);
+        route.push("/");
+      });
+  };
 
   return (
     <nav className="shadow-xl bg-slate-400">
@@ -25,7 +25,13 @@ const Navbar = () => {
         <div className="flex justify-between items-center p-4">
           <div>
             <Link href="/">
-              <Image src={Logo} width={100} height={100} alt="NextJs Logo" />
+              <Image 
+                src={Logo} 
+                width={100} 
+                height={100} 
+                alt="NextJs Logo" 
+                style={{ width: 'auto', height: 'auto' }} 
+              />
             </Link>
           </div>
           {currentUser ? (

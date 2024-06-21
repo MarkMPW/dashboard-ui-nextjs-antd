@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import Navbar from "../components/Navbar";
-import { Layout } from "antd";
+import { Layout, Popconfirm, Button } from "antd";
 import FooterCompo from "../components/FooterCompo";
 import { ThemeContext } from "../components/ThemeContext";
 
@@ -20,6 +20,17 @@ const WelcomePage = () => {
 
   const { currentUser, setCurrentUser } = useContext(ThemeContext);
   const [allPosts, setAllPosts] = useState<AllPostsType[]>([]);
+  const [openPopup, setOpenPopup] = useState<number | null>(null);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+
+  const showPopconfirm = (id: number) => {
+    setOpenPopup(id);
+  };
+
+  const handleCancel = () => {
+    console.log("Clicked cancel button");
+    setOpenPopup(null);
+  };
 
   useEffect(() => {
     try {
@@ -42,6 +53,21 @@ const WelcomePage = () => {
       setAllPosts(JSON.parse(getAllposts));
     }
   }, []);
+
+  const handleDeletePost = (id: number) => {
+    setConfirmLoading(true);
+
+    setTimeout(() => {
+      const deletePost = allPosts.filter(
+        (post: AllPostsType) => post.id !== id
+      );
+
+      localStorage.setItem("posts", JSON.stringify(deletePost));
+      setOpenPopup(null);
+      setConfirmLoading(false);
+      window.location.reload();
+    }, 2000);
+  };
 
   return (
     <Layout>
@@ -70,13 +96,13 @@ const WelcomePage = () => {
                 <div className="shadow-xl my-10 p-10 rounded-xl border-2">
                   <h4 className="text-2xl">{post.title}</h4>
                   <Image
-                    className="my-3 rounded-md"
+                    className="my-3 rounded-md w-auto h-auto"
                     src={post.imageUrl}
                     width={300}
                     height={0}
                     alt="this is an image"
-                    priority={false}
-                    quality={75}
+                    priority={true}
+                    quality={50}
                   />
                   <p>{post.description}</p>
                   <div className="mt-5">
@@ -86,12 +112,20 @@ const WelcomePage = () => {
                     >
                       Edit
                     </Link>
-                    <Link
-                      className="bg-red-500 text-white border py-2 px-3 rounded-md text-lg my-2"
-                      href="/delete"
+                    <Popconfirm
+                      title="Do you want to delete"
+                      open={openPopup === post?.id}
+                      onCancel={handleCancel}
+                      okButtonProps={{ loading: confirmLoading }}
+                      onConfirm={() => handleDeletePost(post?.id)}
                     >
-                      Delete
-                    </Link>
+                      <Button
+                        className="bg-red-500 py-5 px-3 rounded-md text-lg my-2"
+                        onClick={() => showPopconfirm(post?.id)}
+                      >
+                        Delete
+                      </Button>
+                    </Popconfirm>
                   </div>
                 </div>
               </div>
