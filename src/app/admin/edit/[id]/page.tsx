@@ -15,11 +15,11 @@ const { Content } = Layout;
 
 const EditUserPage = ({ params }: { params: { id: number } }) => {
 
-  const route = useRouter()
+  const route = useRouter();
   const [newUser, setNewUser] = useState<UserType | null>(null);
   const [openPopup, setOpenPopup] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [messageApi, contextHolder] = message.useMessage()
+  const [isLoading, setIsLoading] = useState(false)
 
   const showPopconfirm = () => {
     setOpenPopup(true);
@@ -36,10 +36,10 @@ const EditUserPage = ({ params }: { params: { id: number } }) => {
       setOpenPopup(false);
       setConfirmLoading(false);
 
-      message.success('Edit success', 2)
+      message.success("Edit success", 2);
 
-      formik.submitForm().then(()=> {
-        route.push('/admin/users')
+      formik.submitForm().then(() => {
+        route.push("/admin/users");
       });
     }, 2000);
   };
@@ -59,7 +59,7 @@ const EditUserPage = ({ params }: { params: { id: number } }) => {
         : user
     );
 
-    localStorage.setItem('userData', JSON.stringify(updateUser))
+    localStorage.setItem("userData", JSON.stringify(updateUser));
   };
 
   useEffect(() => {
@@ -83,7 +83,7 @@ const EditUserPage = ({ params }: { params: { id: number } }) => {
 
   const formik = useFormik({
     initialValues: {
-      userName: newUser?.userName,
+      userName: newUser?.userName ,
       email: newUser?.email,
       password: newUser?.password,
     },
@@ -97,9 +97,13 @@ const EditUserPage = ({ params }: { params: { id: number } }) => {
         .required("Required"),
     }),
     onSubmit: (values) => {
-      handleUpdateUser(values)
+      handleUpdateUser(values);
     },
   });
+
+  if(isLoading) {
+    return <div>Loading...</div>
+  }
 
   return (
     <Layout>
