@@ -75,7 +75,7 @@ const PostIdPage = ({ params }: { params: { postId: number } }) => {
     initialValues: {
       title: editPost?.title,
       imageUrl: editPost?.imageUrl,
-      description: editPost?.imageUrl
+      description: editPost?.description
     },
     validationSchema: Yup.object({
       title: Yup.string().max(15, 'Reached maximum 15').required('Required'),
@@ -85,29 +85,30 @@ const PostIdPage = ({ params }: { params: { postId: number } }) => {
     onSubmit: (values) => {
       handleUpdatePost(values)
     },
+    enableReinitialize: true
   });
 
   const handleOk = () => {
     formik.submitForm()
-    // setConfirmLoading(true);
+    setConfirmLoading(true);
 
-    // if(Object.keys(formik.errors).length !== 0) {
-    //   setConfirmLoading(false)
-    //   setOpenPopup(false)
-    //   message.error('Failed to edit', 2)
+    if(Object.keys(formik.errors).length !== 0) {
+      setConfirmLoading(false)
+      setOpenPopup(false)
+      message.error('Failed to edit', 2)
 
-    // } else {
-    //   setTimeout(() => {
-    //     setOpenPopup(false);
-    //     setConfirmLoading(false);
+    } else {
+      setTimeout(() => {
+        setOpenPopup(false);
+        setConfirmLoading(false);
   
-    //     message.success("Edit success", 2);
+        message.success("Edit success", 2);
   
-    //     formik.submitForm().then(() => {
-    //       route.push("/admin/users");
-    //     });
-    //   }, 2000);
-    // }
+        formik.submitForm().then(() => {
+          route.push("/admin/posts");
+        });
+      }, 2000);
+    }
   };
 
   return (
@@ -173,17 +174,17 @@ const PostIdPage = ({ params }: { params: { postId: number } }) => {
 
               <Popconfirm
                 title="You want to edit this post?"
-                // open={openPopup}
-                // onCancel={handleCancel}
+                open={openPopup}
+                onCancel={handleCancel}
                 onConfirm={handleOk}
-                // okButtonProps={{ loading: confirmLoading }}
+                okButtonProps={{ loading: confirmLoading }}
               >
                 <Button
                   type="primary"
                   className="py-2 px-3 rounded-md text-lg my-2"
                   // htmlType="submit"
                   // loading={loading}
-                  // onClick={showPopconfirm}
+                  onClick={showPopconfirm}
                 >
                   Edit post
                 </Button>
@@ -191,7 +192,7 @@ const PostIdPage = ({ params }: { params: { postId: number } }) => {
 
               <Button
                 className="py-2 px-3 rounded-md text-lg my-2 bg-slate-200 text-black hover:bg-slate-100 ml-4"
-                // onClick={handleCancelField}
+                onClick={handleCancelField}
               >
                 Cancel
               </Button>
