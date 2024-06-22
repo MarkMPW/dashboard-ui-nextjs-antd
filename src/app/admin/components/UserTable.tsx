@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 import { Space, Table, TableProps, Button } from 'antd'
 
@@ -11,8 +12,13 @@ export interface TableType {
   password: string
 }
 
-
 const UserTable = ({ dataSource }: { dataSource: TableType[] }) => {
+
+  const route = useRouter()
+
+  const handleEdit = (id: number) => {
+    route.push(`/admin/edit/${id}`)
+  }
 
   const columns: TableProps<TableType>['columns'] = [
     {
@@ -40,7 +46,9 @@ const UserTable = ({ dataSource }: { dataSource: TableType[] }) => {
       key: 'action',
       render: (_, record) => (
         <Space>
-          <Button type='primary'>Edit</Button>
+          <Button type='primary' onClick={()=> handleEdit(record.id)}>
+            Edit
+          </Button>
           <Button danger type='primary'>Delete</Button>
         </Space>
       )
