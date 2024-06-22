@@ -1,8 +1,10 @@
 'use client'
 
 import React from 'react'
+import { useRouter } from 'next/navigation'
 
 import { Table, TableProps, Button, Space } from 'antd'
+import Image from 'next/image'
 
 interface PostTableType {
   id: number
@@ -12,6 +14,12 @@ interface PostTableType {
 }
 
 const PostTable = ({ dataSource }: { dataSource: PostTableType[] }) => {
+
+  const route = useRouter()
+
+  const handleNaviEdit = (id: number) => {
+    route.push(`/admin/posts/${id}`)
+  }
 
   const columns: TableProps<PostTableType>['columns'] = [
     {
@@ -27,7 +35,10 @@ const PostTable = ({ dataSource }: { dataSource: PostTableType[] }) => {
     {
       title: 'Image Url',
       dataIndex: 'imageUrl',
-      key: 'imageUrl'
+      key: 'imageUrl',
+      render: (_, record) => (
+        <Image src={record.imageUrl} height={100} width={100} alt='user image'/>
+      ),
     },
     {
       title: 'Description',
@@ -39,7 +50,7 @@ const PostTable = ({ dataSource }: { dataSource: PostTableType[] }) => {
       key: 'action',
       render: (_, record) => (
         <Space>
-          <Button type='primary'>Edit</Button>
+          <Button type='primary' onClick={()=> handleNaviEdit(record.id)}>Edit</Button>
           <Button danger type='primary'>Delete</Button>
         </Space>
       )
