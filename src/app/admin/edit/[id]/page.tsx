@@ -19,7 +19,6 @@ const EditUserPage = ({ params }: { params: { id: number } }) => {
   const [newUser, setNewUser] = useState<UserType | null>(null);
   const [openPopup, setOpenPopup] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [isLoading, setIsLoading] = useState(false)
 
   const showPopconfirm = () => {
     setOpenPopup(true);
@@ -32,16 +31,29 @@ const EditUserPage = ({ params }: { params: { id: number } }) => {
   const handleOk = () => {
     setConfirmLoading(true);
 
-    setTimeout(() => {
-      setOpenPopup(false);
-      setConfirmLoading(false);
+    if(Object.keys(formik.errors).length !== 0) {
+      setConfirmLoading(false)
+      setOpenPopup(false)
+      message.error('Failed to edit', 2)
 
-      message.success("Edit success", 2);
+    } else {
+      setTimeout(() => {
+        setOpenPopup(false);
+        setConfirmLoading(false);
+  
+        message.success("Edit success", 2);
+  
+        formik.submitForm().then(() => {
+          route.push("/admin/users");
+        });
+      }, 2000);
+    }
+  };
 
-      formik.submitForm().then(() => {
-        route.push("/admin/users");
-      });
-    }, 2000);
+  const handleCancelField = () => {
+    if (newUser) {
+      formik.resetForm();
+    }
   };
 
   const handleUpdateUser = (values: any) => {
@@ -99,11 +111,8 @@ const EditUserPage = ({ params }: { params: { id: number } }) => {
     onSubmit: (values) => {
       handleUpdateUser(values);
     },
+    enableReinitialize: true  
   });
-
-  if(isLoading) {
-    return <div>Loading...</div>
-  }
 
   return (
     <Layout>
@@ -129,7 +138,11 @@ const EditUserPage = ({ params }: { params: { id: number } }) => {
                   name="userName"
                   value={formik.values.userName}
                   onChange={formik.handleChange}
+                  status={formik.errors.userName && formik.touched ? 'error' : ''}
                 />
+                {formik.errors.userName && formik.touched && (
+                  <p className='text-red-400'>{formik.errors.userName}</p>
+                )}
               </div>
               <div className="mt-3">
                 <h1 className="text-xl">Email:</h1>
@@ -140,7 +153,11 @@ const EditUserPage = ({ params }: { params: { id: number } }) => {
                   name="email"
                   value={formik.values.email}
                   onChange={formik.handleChange}
+                  status={formik.errors.email && formik.touched ? 'error' : ''}
                 />
+                 {formik.errors.email && formik.touched && (
+                  <p className='text-red-400'>{formik.errors.email}</p>
+                )}
               </div>
               <div className="mt-3">
                 <h1 className="text-xl">Password:</h1>
@@ -151,7 +168,11 @@ const EditUserPage = ({ params }: { params: { id: number } }) => {
                   name="password"
                   value={formik.values.password}
                   onChange={formik.handleChange}
+                  status={formik.errors.password && formik.touched ? 'error' : ''}
                 />
+                 {formik.errors.password && formik.touched && (
+                  <p className='text-red-400'>{formik.errors.password}</p>
+                )}
               </div>
 
               <Popconfirm
@@ -171,6 +192,13 @@ const EditUserPage = ({ params }: { params: { id: number } }) => {
                   Edit user
                 </Button>
               </Popconfirm>
+
+              <Button
+                className='py-2 px-3 rounded-md text-lg my-2 bg-slate-200 text-black hover:bg-slate-100 ml-4'
+                onClick={handleCancelField}
+              >
+                Cancel
+              </Button>
             </form>
           </div>
         </div>
