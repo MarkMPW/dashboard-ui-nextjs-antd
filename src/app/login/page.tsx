@@ -80,7 +80,7 @@ const LoginPage = () => {
         });
 
         localStorage.setItem('currentUser', JSON.stringify(user))
-        localStorage.setItem('posts', JSON.stringify([]))
+        // localStorage.setItem('posts', JSON.stringify([]))
 
         setLoading(false);
 
@@ -120,7 +120,6 @@ const LoginPage = () => {
 
   return (
     <Layout>
-      <Navbar />
       {contextHolder}
       <Content>
         <div className="flex-grow">
@@ -179,7 +178,6 @@ const LoginPage = () => {
           </div>
         </div>
       </Content>
-      <FooterCompo />
     </Layout>
   );
 };

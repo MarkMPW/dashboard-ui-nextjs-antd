@@ -79,7 +79,6 @@ const CreatePost = () => {
 
   return (
     <Layout>
-      <Navbar />
       <Content>
         <div className="flex-grow">
           <div className="container mx-auto shadow-xl my-10 p-10 rounded-xl">
@@ -130,7 +129,6 @@ const CreatePost = () => {
           </div>
         </div>
       </Content>
-      <FooterCompo />
     </Layout>
   );
 };

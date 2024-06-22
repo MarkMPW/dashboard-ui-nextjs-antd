@@ -7,7 +7,6 @@ import Navbar from "../components/Navbar";
 import { Layout, Popconfirm, Button } from "antd";
 import FooterCompo from "../components/FooterCompo";
 import { ThemeContext } from "../components/ThemeContext";
-
 export interface AllPostsType {
   id: number;
   title: string;
@@ -71,7 +70,6 @@ const WelcomePage = () => {
 
   return (
     <Layout>
-      <Navbar />
       <Content>
         <div className="flex-grow p-2">
           <div className="container mx-auto shadow-xl my-10 p-10 rounded-xl border-2 border-red-200 ">
@@ -168,7 +166,6 @@ const WelcomePage = () => {
           </div>
         </div>
       </Content>
-      <FooterCompo />
     </Layout>
   );
 };
