@@ -17,7 +17,7 @@ const UserTable = ({ dataSource }: { dataSource: TableType[] }) => {
   const route = useRouter()
 
   const handleEdit = (id: number) => {
-    route.push(`/admin/edit/${id}`)
+    route.push(`/admin/users/${id}`)
   }
 
   const columns: TableProps<TableType>['columns'] = [

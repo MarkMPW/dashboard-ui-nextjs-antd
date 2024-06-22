@@ -14,8 +14,6 @@ const ManageUserPage = () => {
 
   }, [])
 
-  console.log(userData)
-
   return (
     <div>
       <h1 className='text-3xl mb-5'>Manage Users</h1>
