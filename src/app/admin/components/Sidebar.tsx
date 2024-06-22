@@ -18,13 +18,13 @@ const Sidebar = () => {
       label: 'Dashboard',
     },
     {
-      key: '/admin/users',
-      label: 'Users'
-    },
-    {
       type: 'divider',
       className: 'custom-divider',
       key: 'divider1'
+    },
+    {
+      key: '/admin/users',
+      label: 'Users'
     },
     {
       key: '/admin/posts',
