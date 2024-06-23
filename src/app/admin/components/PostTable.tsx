@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation'
 
 import { Table, TableProps, Button, Space, Popconfirm } from 'antd'
 import Image from 'next/image'
-import { AllPostsType } from '@/app/welcome/page'
 
 interface PostTableType {
   id: number

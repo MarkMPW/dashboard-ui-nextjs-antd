@@ -1,9 +1,10 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { Space, Table, TableProps, Button } from 'antd'
+import { Space, Table, TableProps, Button, Popconfirm } from 'antd'
+import { UserType } from '@/app/register/page'
 
 export interface TableType {
   id: number
@@ -15,9 +16,34 @@ export interface TableType {
 const UserTable = ({ dataSource }: { dataSource: TableType[] }) => {
 
   const route = useRouter()
+  const [open, setOpen] = useState<number | null>(null);
+  const [confirmLoading, setConfirmLoading] = useState(false)
+
+  const showPopconfirm = (id: number) => {
+    setOpen(id);
+  };
+
+  const handleCancel = () => {
+    console.log('Clicked cancel button');
+    setOpen(null);
+  };
 
   const handleEdit = (id: number) => {
     route.push(`/admin/users/${id}`)
+  }
+
+  const handleOk = (userId: number) => {
+    setConfirmLoading(true)
+
+    const updateDataSource = dataSource.filter((data: TableType) => data.id !== userId)
+
+    setTimeout(()=> {
+      localStorage.setItem('userData', JSON.stringify(updateDataSource))
+
+      setOpen(null)
+      setConfirmLoading(false)
+      window.location.reload()
+    }, 2000)
   }
 
   const columns: TableProps<TableType>['columns'] = [
@@ -49,7 +75,21 @@ const UserTable = ({ dataSource }: { dataSource: TableType[] }) => {
           <Button type='primary' onClick={()=> handleEdit(record.id)}>
             Edit
           </Button>
-          <Button danger type='primary'>Delete</Button>
+          <Popconfirm
+            title='You want to delete this user?'
+            onCancel={handleCancel}
+            open={open === record?.id}
+            okButtonProps={{ loading: confirmLoading }}
+            onConfirm={()=> handleOk(record.id)}
+          >
+            <Button
+              danger
+              type='primary'
+              onClick={()=> showPopconfirm(record?.id)}
+            >
+              Delete
+            </Button>
+          </Popconfirm>
         </Space>
       )
     }
