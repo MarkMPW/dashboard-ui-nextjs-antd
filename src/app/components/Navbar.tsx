@@ -14,7 +14,6 @@ const Navbar: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem("currentUser")
     setCurrentUser(undefined);
-    window.location.reload()
     route.push("/");
   };
 
