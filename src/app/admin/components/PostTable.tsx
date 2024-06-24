@@ -13,7 +13,11 @@ interface PostTableType {
   description: string
 }
 
-const PostTable = ({ dataSource }: { dataSource: PostTableType[] }) => {
+interface PostTableProps {
+  dataSource: PostTableType[],
+}
+
+const PostTable: React.FC<PostTableProps> = ({ dataSource}) => {
 
   const route = useRouter()
 

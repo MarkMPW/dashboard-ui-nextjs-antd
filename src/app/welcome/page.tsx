@@ -7,6 +7,8 @@ import Navbar from "../components/Navbar";
 import { Layout, Popconfirm, Button } from "antd";
 import FooterCompo from "../components/FooterCompo";
 import { ThemeContext } from "../components/ThemeContext";
+import { NextPage } from "next";
+
 export interface AllPostsType {
   id: number;
   title: string;
@@ -14,7 +16,7 @@ export interface AllPostsType {
   description: string;
 }
 
-const WelcomePage = () => {
+const WelcomePage: NextPage = () => {
   const { Content } = Layout;
 
   const { currentUser, setCurrentUser } = useContext(ThemeContext);
