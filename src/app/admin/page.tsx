@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import TotalCard from "./components/TotalCard";
-import { Layout, Row, Col, Flex, List } from "antd";
+import { Layout, List } from "antd";
 
 import { SearchOutlined, UserOutlined } from "@ant-design/icons";
 import { NextPage } from "next";

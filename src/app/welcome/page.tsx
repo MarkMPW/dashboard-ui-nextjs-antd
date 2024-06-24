@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Layout, Popconfirm, Button } from "antd";
 import { ThemeContext } from "../components/ThemeContext";
 import { NextPage } from "next";
+import withAuth from "../HOC/withUserAuth";
 
 export interface AllPostsType {
   id: number;
@@ -170,4 +171,4 @@ const WelcomePage: NextPage = () => {
   );
 };
 
-export default WelcomePage;
+export default withAuth(WelcomePage);
