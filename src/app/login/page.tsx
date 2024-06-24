@@ -68,11 +68,12 @@ const LoginPage: NextPage = () => {
 
       if (user) {
         setCurrentUser(user)
-        console.log("login successful");
 
         await new Promise((resolve) => {
           setTimeout(resolve, 4000);
         });
+
+        localStorage.setItem('currentUser', JSON.stringify(user))
         
         message.success('Login successful!', 2, () => {
           if(user.role === 'user') {
@@ -82,16 +83,7 @@ const LoginPage: NextPage = () => {
           }
         });
 
-       localStorage.setItem('currentUser', JSON.stringify(user))
-
         setLoading(false);
-
-
-        if(user.role === 'user') {
-          router.push('/welcome')
-        } else if (user.role === 'admin') {
-          router.push('/admin')
-        }
 
       } else {
         

@@ -39,6 +39,13 @@ const ThemeProvider: React.FC<ChildrenProp> = ({ children }) => {
   //   }
   // }, [])
 
+  useEffect(() => {
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      setCurrentUser(JSON.parse(storedUser));
+    }
+  }, []);
+  
   return(
     // เปลี่ยนชื่อเป็น AuthContext
     <ThemeContext.Provider

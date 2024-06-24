@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Layout, Popconfirm, Button } from "antd";
 import { ThemeContext } from "../components/ThemeContext";
 import { NextPage } from "next";
+import withAuth from "../HOC/withAuth";
 
 export interface AllPostsType {
   id: number;
@@ -14,36 +15,38 @@ export interface AllPostsType {
   description: string;
 }
 
-const WelcomePage: NextPage = () => {
-  const { Content } = Layout;
+  const WelcomePage: NextPage = () => {
+    const { Content } = Layout;
 
-  const { currentUser, setCurrentUser } = useContext(ThemeContext);
-  const [allPosts, setAllPosts] = useState<AllPostsType[]>([]);
-  const [openPopup, setOpenPopup] = useState<number | null>(null);
-  const [confirmLoading, setConfirmLoading] = useState(false);
+    const { currentUser, setCurrentUser } = useContext(ThemeContext);
+    const [allPosts, setAllPosts] = useState<AllPostsType[]>([]);
+    const [openPopup, setOpenPopup] = useState<number | null>(null);
+    const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const showPopconfirm = (id: number) => {
-    setOpenPopup(id);
-  };
+    const showPopconfirm = (id: number) => {
+      setOpenPopup(id);
+    };
 
-  const handleCancel = () => {
-    console.log("Clicked cancel button");
-    setOpenPopup(null);
-  };
+    const handleCancel = () => {
+      console.log("Clicked cancel button");
+      setOpenPopup(null);
+    };
 
-  useEffect(() => {
-    try {
-      const storedUser = localStorage.getItem("currentUser");
+    useEffect(() => {
+      try {
+        const storedUser = localStorage.getItem("currentUser");
 
-      if (storedUser) {
-        setCurrentUser(JSON.parse(storedUser));
-      } else {
-        setCurrentUser(undefined);
+        console.log('currentUser in user: ', storedUser)
+
+        if (storedUser) {
+          setCurrentUser(JSON.parse(storedUser));
+        } else {
+          setCurrentUser(undefined);
+        }
+      } catch (error: unknown) {
+        console.log("failed to get currentUser: ", error);
       }
-    } catch (error: unknown) {
-      console.log("failed to get currentUser: ", error);
-    }
-  }, []);
+    }, []);
 
   useEffect(() => {
     const getAllposts = localStorage.getItem("posts");
@@ -57,14 +60,12 @@ const WelcomePage: NextPage = () => {
     setConfirmLoading(true);
 
     setTimeout(() => {
-      const deletePost = allPosts.filter(
-        (post: AllPostsType) => post.id !== id
-      );
+      const deletePost = allPosts.filter((post: AllPostsType) => post.id !== id);
 
       localStorage.setItem("posts", JSON.stringify(deletePost));
+      setAllPosts(deletePost);
       setOpenPopup(null);
       setConfirmLoading(false);
-      window.location.reload();
     }, 2000);
   };
 
@@ -170,4 +171,4 @@ const WelcomePage: NextPage = () => {
   );
 };
 
-export default WelcomePage;
+export default withAuth(WelcomePage);
