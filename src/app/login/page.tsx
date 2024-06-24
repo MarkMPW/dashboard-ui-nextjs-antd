@@ -14,8 +14,9 @@ import * as Yup from "yup";
 
 import { UserType } from "../register/page";
 import { ThemeContext } from "../components/ThemeContext";
+import { NextPage } from "next";
 
-const LoginPage = () => {
+const LoginPage: NextPage = () => {
 
   const { Content, Footer } = Layout;
   const router = useRouter()

@@ -9,8 +9,9 @@ import { useRouter } from "next/navigation";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { NextPage } from "next";
 
-const CreatePost = () => {
+const CreatePost: NextPage = () => {
 
   let initailNumber = 1
 

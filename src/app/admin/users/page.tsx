@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState } from 'react'
 import UserTable, { TableType } from '../components/UserTable'
+import { NextPage } from 'next'
 
-const ManageUserPage = () => {
+const ManageUserPage: NextPage = () => {
   const [userData, setUserData] = useState<TableType[]>([])
 
   useEffect(() => {

@@ -10,10 +10,17 @@ import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { AllPostsType } from "@/app/welcome/page";
+import { NextPage } from "next";
 
 const { Content } = Layout;
 
-const PostIdPage = ({ params }: { params: { postId: number } }) => {
+interface PageProp {
+  params: {
+    postId: number
+  }
+}
+
+const PostIdPage: NextPage<PageProp> = ({ params }) => {
 
   const route = useRouter();
   const [editPost, setEditPost] = useState<AllPostsType | null>(null);

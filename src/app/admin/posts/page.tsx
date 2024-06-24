@@ -3,8 +3,9 @@
 import { AllPostsType } from '@/app/welcome/page'
 import React, { useEffect, useState } from 'react'
 import PostTable from '../components/PostTable'
+import { NextPage } from 'next'
 
-const ManagePostPage = () => {
+const ManagePostPage: NextPage = () => {
 
   const [postData, setPostData] = useState<AllPostsType[]>([])
 
