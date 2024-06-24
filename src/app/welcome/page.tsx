@@ -7,7 +7,6 @@ import { Layout, Popconfirm, Button } from "antd";
 import { ThemeContext } from "../components/ThemeContext";
 import { NextPage } from "next";
 import withAuth from "../HOC/withAuth";
-import withRoleAuth from "../HOC/withRoleAuth";
 
 export interface AllPostsType {
   id: number;
@@ -61,14 +60,12 @@ export interface AllPostsType {
     setConfirmLoading(true);
 
     setTimeout(() => {
-      const deletePost = allPosts.filter(
-        (post: AllPostsType) => post.id !== id
-      );
+      const deletePost = allPosts.filter((post: AllPostsType) => post.id !== id);
 
       localStorage.setItem("posts", JSON.stringify(deletePost));
+      setAllPosts(deletePost);
       setOpenPopup(null);
       setConfirmLoading(false);
-      window.location.reload();
     }, 2000);
   };
 
