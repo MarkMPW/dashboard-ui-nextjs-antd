@@ -7,7 +7,7 @@ import Image from "next/image";
 import { ThemeContext } from "./ThemeContext";
 import { useRouter } from "next/navigation";
 
-const Navbar = () => {
+const Navbar: React.FC = () => {
   const route = useRouter();
   const { currentUser, setCurrentUser } = useContext(ThemeContext);
 

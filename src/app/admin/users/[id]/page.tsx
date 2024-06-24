@@ -10,10 +10,17 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import { UserType } from "@/app/register/page";
+import { NextPage } from "next";
 
 const { Content } = Layout;
 
-const EditUserPage = ({ params }: { params: { id: number } }) => {
+interface PageProp {
+  params: { 
+    id: number
+  }
+}
+
+const EditUserPage: NextPage<PageProp> = ({ params }) => {
 
   const route = useRouter();
   const [newUser, setNewUser] = useState<UserType | null>(null);

@@ -6,8 +6,12 @@ import { createContext, useState, useEffect } from 'react'
 import { UserType } from '../register/page'
 
 interface ThemeContextType {
-  currentUser: UserType | undefined
+  currentUser?: UserType | null
   setCurrentUser: React.Dispatch<React.SetStateAction<UserType | undefined>>
+}
+
+interface ChildrenProp {
+  children: React.ReactNode
 }
 
 const initialThemeContext: ThemeContextType = {
@@ -17,8 +21,8 @@ const initialThemeContext: ThemeContextType = {
 
 export const ThemeContext = createContext<ThemeContextType>(initialThemeContext)
 
-const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [currentUser, setCurrentUser] = useState<UserType>()
+const ThemeProvider: React.FC<ChildrenProp> = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState<UserType | undefined>(undefined)
 
   // useEffect(() => {
   //   try {
@@ -36,6 +40,7 @@ const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   // }, [])
 
   return(
+    // เปลี่ยนชื่อเป็น AuthContext
     <ThemeContext.Provider
       value={{
         currentUser,

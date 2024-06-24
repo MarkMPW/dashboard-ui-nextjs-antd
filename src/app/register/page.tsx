@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { NextPage } from "next";
 
 export interface UserType {
   id: number,
@@ -19,7 +20,7 @@ export interface UserType {
   role: string;
 }
 
-const RegisterPage = () => {
+const RegisterPage: NextPage = () => {
 
   const { Content, Footer } = Layout;
   const router = useRouter()

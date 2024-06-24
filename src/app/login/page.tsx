@@ -14,8 +14,9 @@ import * as Yup from "yup";
 
 import { UserType } from "../register/page";
 import { ThemeContext } from "../components/ThemeContext";
+import { NextPage } from "next";
 
-const LoginPage = () => {
+const LoginPage: NextPage = () => {
 
   const { Content, Footer } = Layout;
   const router = useRouter()
@@ -54,6 +55,8 @@ const LoginPage = () => {
         .required("Required"),
     }),
     onSubmit: async (values) => {
+      setLoading(true);
+
       const getUsersData = localStorage.getItem("userData");
       const users = getUsersData ? JSON.parse(getUsersData) : [];
 
@@ -63,9 +66,9 @@ const LoginPage = () => {
       );
 
       if (user) {
+        setCurrentUser(user)
         console.log("login successful");
 
-        setLoading(true);
         
         await new Promise((resolve) => {
           setTimeout(resolve, 4000);
@@ -79,7 +82,8 @@ const LoginPage = () => {
           }
         });
 
-        localStorage.setItem('currentUser', JSON.stringify(user))
+       localStorage.setItem('currentUser', JSON.stringify(user))
+
         // localStorage.setItem('posts', JSON.stringify([]))
 
         setLoading(false);

@@ -5,10 +5,11 @@ import TotalCard from "./components/TotalCard";
 import { Layout, Row, Col, Flex, List } from "antd";
 
 import { SearchOutlined, UserOutlined } from "@ant-design/icons";
+import { NextPage } from "next";
 
 const { Content } = Layout;
 
-const AdminPage = () => {
+const AdminPage: NextPage = () => {
   const [totalUsers, setTotalUsers] = useState<number>(0);
   const [totalPosts, setTotalPosts] = useState<number>(0);
 

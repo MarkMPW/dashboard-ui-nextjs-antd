@@ -7,7 +7,7 @@ import { Menu, Layout } from 'antd'
 
 const { Sider } = Layout
 
-const Sidebar = () => {
+const Sidebar: React.FC = () => {
 
   const route = useRouter()
   const pathname = usePathname()
@@ -18,13 +18,13 @@ const Sidebar = () => {
       label: 'Dashboard',
     },
     {
-      key: '/admin/users',
-      label: 'Users'
-    },
-    {
       type: 'divider',
       className: 'custom-divider',
       key: 'divider1'
+    },
+    {
+      key: '/admin/users',
+      label: 'Users'
     },
     {
       key: '/admin/posts',
