@@ -12,11 +12,10 @@ const Navbar: React.FC = () => {
   const { currentUser, setCurrentUser } = useContext(ThemeContext);
 
   const handleLogout = () => {
-    localStorage.removeItem("currentUser"),
-      setTimeout(() => {
-        setCurrentUser(undefined);
-        route.push("/");
-      });
+    localStorage.removeItem("currentUser")
+    setCurrentUser(undefined);
+    window.location.reload()
+    route.push("/");
   };
 
   return (
@@ -25,12 +24,7 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between items-center p-4">
           <div>
             <Link href="/">
-              <Image 
-                src={Logo} 
-                width={100} 
-                height={100} 
-                alt="NextJs Logo" 
-              />
+              <Image src={Logo} width={100} height={100} alt="NextJs Logo" />
             </Link>
           </div>
           {currentUser ? (

@@ -1,15 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import TotalCard from "./components/TotalCard";
 import { Layout, List } from "antd";
 
 import { SearchOutlined, UserOutlined } from "@ant-design/icons";
 import { NextPage } from "next";
+import withAuth from "../HOC/withAuth";
+import withRoleAuth from "../HOC/withRoleAuth";
+
+import { ThemeContext } from "../components/ThemeContext";
+import withAuthTest from "../HOC/withAdminAuth";
 
 const { Content } = Layout;
 
 const AdminPage: NextPage = () => {
+
+  const { setCurrentUser } = useContext(ThemeContext)
   const [totalUsers, setTotalUsers] = useState<number>(0);
   const [totalPosts, setTotalPosts] = useState<number>(0);
 
@@ -23,6 +30,22 @@ const AdminPage: NextPage = () => {
     setTotalPosts(posts);
     setTotalUsers(users);
   }, []);
+
+  useEffect(() => {
+    try {
+      const storedUser = localStorage.getItem('currentUser')
+
+      console.log('currentUser in admin: ', storedUser)
+  
+      if(storedUser) {
+        setCurrentUser(JSON.parse(storedUser))
+      } else {
+        setCurrentUser(undefined)
+      }
+    } catch(error: unknown) {
+      console.log('Failed to get currentUser: ', error)
+    }
+  }, [setCurrentUser])
 
   const data = [
     {
@@ -56,4 +79,4 @@ const AdminPage: NextPage = () => {
   );
 };
 
-export default AdminPage;
+export default withAuthTest(AdminPage);
