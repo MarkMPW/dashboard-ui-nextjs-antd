@@ -100,7 +100,11 @@ const CreatePost: NextPage = () => {
                 name="title"
                 value={formik.values.title}
                 onChange={formik.handleChange}
+                status={formik.errors.title ? 'error' : ''}
               />
+              {formik.errors.title && formik.touched ? (
+                <p className='text-red-400'>{formik.errors.title}</p>
+              ): null}
               <Input
                 type="text"
                 className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
@@ -108,7 +112,11 @@ const CreatePost: NextPage = () => {
                 name="imageUrl"
                 value={formik.values.imageUrl}
                 onChange={formik.handleChange}
+                status={formik.errors.imageUrl ? 'error' : ''}
               />
+               {formik.errors.imageUrl && formik.touched ? (
+                <p className='text-red-400'>{formik.errors.imageUrl}</p>
+              ): null}
               <textarea
                 cols={30}
                 rows={10}
@@ -118,6 +126,9 @@ const CreatePost: NextPage = () => {
                 value={formik.values.description}
                 onChange={formik.handleChange}
               ></textarea>
+               {formik.errors.description && formik.touched ? (
+                <p className='text-red-400'>{formik.errors.description}</p>
+              ): null}
               <Button
                 type="primary"
                 className="py-2 px-3 rounded-md text-lg my-2"
