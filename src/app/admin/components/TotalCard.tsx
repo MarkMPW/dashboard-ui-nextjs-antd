@@ -4,7 +4,13 @@ import React from 'react'
 
 import { Card } from 'antd';
 
-const TotalCard = ({ icon, title, totalNumber }: { icon: React.ReactNode, title: string, totalNumber?: number }) => {
+interface CardPropsType {
+  icon: React.ReactNode
+  title: string
+  totalNumber: number
+}
+
+const TotalCard: React.FC<CardPropsType> = ({ icon, title, totalNumber }) => {
   return (
     <Card
       title={

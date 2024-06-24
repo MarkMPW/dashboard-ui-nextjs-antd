@@ -7,7 +7,7 @@ import { Menu, Layout } from 'antd'
 
 const { Sider } = Layout
 
-const Sidebar = () => {
+const Sidebar: React.FC = () => {
 
   const route = useRouter()
   const pathname = usePathname()

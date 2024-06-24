@@ -10,6 +10,10 @@ interface ThemeContextType {
   setCurrentUser: React.Dispatch<React.SetStateAction<UserType | undefined>>
 }
 
+interface ChildrenProp {
+  children: React.ReactNode
+}
+
 const initialThemeContext: ThemeContextType = {
   currentUser: undefined,
   setCurrentUser: () => {}
@@ -17,7 +21,7 @@ const initialThemeContext: ThemeContextType = {
 
 export const ThemeContext = createContext<ThemeContextType>(initialThemeContext)
 
-const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+const ThemeProvider: React.FC<ChildrenProp> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<UserType | undefined>(undefined)
 
   // useEffect(() => {

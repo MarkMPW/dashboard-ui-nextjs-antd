@@ -13,7 +13,11 @@ export interface TableType {
   password: string
 }
 
-const UserTable = ({ dataSource }: { dataSource: TableType[] }) => {
+interface TablePropsType {
+  dataSource: TableType[]
+}
+
+const UserTable: React.FC<TablePropsType> = ({ dataSource }) => {
 
   const route = useRouter()
   const [open, setOpen] = useState<number | null>(null);
