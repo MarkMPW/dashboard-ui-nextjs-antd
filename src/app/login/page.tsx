@@ -2,12 +2,11 @@
 
 import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from 'next/navigation'
-import { Layout } from "antd";
-import Navbar from "../components/Navbar";
 import Link from "next/link";
-import FooterCompo from "../components/FooterCompo";
 
-import { Input, Button, message } from "antd";
+import InitialUser from '../../../users.json'
+
+import { Input, Button, message, Layout } from "antd";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -18,7 +17,7 @@ import { NextPage } from "next";
 
 const LoginPage: NextPage = () => {
 
-  const { Content, Footer } = Layout;
+  const { Content } = Layout;
   const router = useRouter()
 
   const { currentUser, setCurrentUser } = useContext(ThemeContext)
@@ -60,7 +59,9 @@ const LoginPage: NextPage = () => {
       const getUsersData = localStorage.getItem("userData");
       const users = getUsersData ? JSON.parse(getUsersData) : [];
 
-      const user = users.find(
+      const allUsers = [...InitialUser, users]
+
+      const user = allUsers.find(
         (user: UserType) =>
           user.email === values.email && user.password === values.password
       );
@@ -69,7 +70,6 @@ const LoginPage: NextPage = () => {
         setCurrentUser(user)
         console.log("login successful");
 
-        
         await new Promise((resolve) => {
           setTimeout(resolve, 4000);
         });
@@ -83,8 +83,6 @@ const LoginPage: NextPage = () => {
         });
 
        localStorage.setItem('currentUser', JSON.stringify(user))
-
-        // localStorage.setItem('posts', JSON.stringify([]))
 
         setLoading(false);
 
