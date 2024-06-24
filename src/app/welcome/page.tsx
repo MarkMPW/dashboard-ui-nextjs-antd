@@ -3,9 +3,7 @@
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
-import Navbar from "../components/Navbar";
 import { Layout, Popconfirm, Button } from "antd";
-import FooterCompo from "../components/FooterCompo";
 import { ThemeContext } from "../components/ThemeContext";
 import { NextPage } from "next";
 

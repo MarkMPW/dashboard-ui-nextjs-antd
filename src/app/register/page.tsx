@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { Layout, Input, Button } from "antd";
 import Navbar from "../components/Navbar";
 import Link from "next/link";
-import FooterCompo from "../components/FooterCompo";
 import { useRouter } from "next/navigation";
 
 import { useFormik } from "formik";
@@ -22,7 +21,7 @@ export interface UserType {
 
 const RegisterPage: NextPage = () => {
 
-  const { Content, Footer } = Layout;
+  const { Content } = Layout;
   const router = useRouter()
 
   const formik = useFormik({
@@ -31,7 +30,7 @@ const RegisterPage: NextPage = () => {
       email: "",
       password: "",
       confirmPassword: "",
-      role: 'admin'
+      role: 'user'
     },
     validationSchema: Yup.object({
       userName: Yup.string()
@@ -78,18 +77,6 @@ const RegisterPage: NextPage = () => {
       } else router.push('/admin')
     },
   });
-
-  // const handleChange = (name: string, value: string) => {
-  //   setUser((prevUser) => ({
-  //     ...prevUser,
-  //     [name]: value,
-  //   }));
-  // };
-
-  // const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   localStorage.setItem("userData", JSON.stringify(user));
-  // };
 
   return (
     <Layout>
