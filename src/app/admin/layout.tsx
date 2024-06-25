@@ -1,7 +1,7 @@
 import "../globals.css";
 
 import { Layout } from "antd";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "@/components/admin/Sidebar";
 
 export default function AdminLayout({
   children,

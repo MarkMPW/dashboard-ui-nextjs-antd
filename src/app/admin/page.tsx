@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useContext, useMemo } from "react";
-import TotalCard from "./components/TotalCard";
+import TotalCard from "@/components/admin/TotalCard";
 import { Layout, List } from "antd";
 
 import { SearchOutlined, UserOutlined } from "@ant-design/icons";

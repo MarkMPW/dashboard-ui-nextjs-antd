@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import UserTable, { TableType } from '../components/UserTable'
+import UserTable, { TableType } from '@/components/admin/UserTable'
 import { NextPage } from 'next'
 
 const ManageUserPage: NextPage = () => {
