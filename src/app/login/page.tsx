@@ -4,8 +4,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from 'next/navigation'
 import Link from "next/link";
 
-import InitialUser from '../../../users.json'
-
 import { Input, Button, message, Layout } from "antd";
 
 import { useFormik } from "formik";
@@ -14,6 +12,8 @@ import * as Yup from "yup";
 import { UserType } from "../register/page";
 import { ThemeContext } from "../components/ThemeContext";
 import { NextPage } from "next";
+
+import InitialUserData from '../../../users.json'
 
 const LoginPage: NextPage = () => {
 
@@ -54,25 +54,36 @@ const LoginPage: NextPage = () => {
         .required("Required"),
     }),
     onSubmit: async (values) => {
-      setLoading(true);
+      handleLogin(values)
+    },
+  });
 
+  const handleLogin = async (values: { email: string, password: string }) => {
+    
+    setLoading(true);
+
+    try {
       const getUsersData = localStorage.getItem("userData");
       const users = getUsersData ? JSON.parse(getUsersData) : [];
 
-      const allUsers = [...InitialUser, users]
+      const allUser = [...InitialUserData, ...users]
 
-      const user = allUsers.find(
+      console.log('all user: ', allUser)
+  
+      const user = allUser.find(
         (user: UserType) =>
           user.email === values.email && user.password === values.password
       );
 
+      console.log('find user: ', user)
+
       if (user) {
         setCurrentUser(user)
-
+  
         await new Promise((resolve) => {
           setTimeout(resolve, 4000);
         });
-
+  
         localStorage.setItem('currentUser', JSON.stringify(user))
         
         message.success('Login successful!', 2, () => {
@@ -82,26 +93,20 @@ const LoginPage: NextPage = () => {
             router.push('/admin');
           }
         });
-
-        setLoading(false);
-
+    
       } else {
-        
-        setLoading(true);
-        
-        await new Promise((resolve) => {
-          setTimeout(resolve, 4000);
-        });
-        
         console.log("Failed to login");
-        setLoading(false);
-
         failed()
       }
+      
+    } catch(error: unknown) {
+      console.log('Login failed: ', error)
+      failed()
 
-      console.log("users: ", users);
-    },
-  });
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
     if(messageContent) {
