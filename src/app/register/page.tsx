@@ -5,12 +5,14 @@ import { Layout, Input, Button } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import InitailUserData from '../../../users.json'
+
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { NextPage } from "next";
 
 export interface UserType {
-  id: number,
+  id: number;
   userName: string;
   email: string;
   password: string;
@@ -19,17 +21,17 @@ export interface UserType {
 }
 
 const RegisterPage: NextPage = () => {
-
   const { Content } = Layout;
-  const router = useRouter()
+  const router = useRouter();
 
   const formik = useFormik({
     initialValues: {
+      id: 0,
       userName: "",
       email: "",
       password: "",
       confirmPassword: "",
-      role: 'user'
+      role: "user",
     },
     validationSchema: Yup.object({
       userName: Yup.string()
@@ -43,39 +45,51 @@ const RegisterPage: NextPage = () => {
         .oneOf([Yup.ref("password")], "Password must match")
         .required("Required"),
     }),
-    onSubmit: (values) => {
+    onSubmit: (values: UserType) => {
+      handleRegister(values)
+    },
+  });
 
-      const storedUsers = localStorage.getItem('userData')
+  const handleRegister = (values: UserType) => {
+    try {
+      const storedUsers = localStorage.getItem("userData");
 
-      let users = [];
+      let users = []
       if (storedUsers) {
         try {
-          users = JSON.parse(storedUsers);
-          if (!Array.isArray(users)) {
-            users = [];
+          const parsedUsers = JSON.parse(storedUsers)
+          users = JSON.parse(parsedUsers);
+          if (Array.isArray(users)) {
+            users = parsedUsers
           }
         } catch (e) {
-          users = [];
+          console.log('Error parsing stored users: ', e)
         }
       }
 
-      users.push({
+      const allUsers = [...InitailUserData, ...users]
+
+      const newUser = {
         id: Date.now(),
         userName: values.userName,
         email: values.email,
         password: values.password,
-        role: values.role
-      })
+        role: values.role,
+      }
+
+      allUsers.push(newUser)
 
       console.log("user from formik: ", values);
-      
-      localStorage.setItem("userData", JSON.stringify(users));
 
-      if(values.role === 'user') {
-        router.push('/login')
-      } else router.push('/admin')
-    },
-  });
+      localStorage.setItem("userData", JSON.stringify(allUsers));
+
+      if (values.role === "user") {
+        router.push("/login");
+      } else router.push("/admin");
+    } catch (error: unknown) {
+      console.log("failed to register: ", error);
+    }
+  };
 
   return (
     <Layout>
@@ -144,14 +158,17 @@ const RegisterPage: NextPage = () => {
                   }
                   // onChange={(e) => handleChange(e.target.name, e.target.value)}
                 />
-                   {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-                  <p className="text-red-500">{formik.errors.confirmPassword}</p>
+                {formik.touched.confirmPassword &&
+                formik.errors.confirmPassword ? (
+                  <p className="text-red-500">
+                    {formik.errors.confirmPassword}
+                  </p>
                 ) : null}
 
                 <Button
                   className="border py-2 px-3 rounded text-lg my-2"
                   htmlType="submit"
-                  type='primary'
+                  type="primary"
                 >
                   Sign Up
                 </Button>
