@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useContext } from "react";
-import { createContext, useState, useEffect } from "react";
+import React, { useContext, createContext, useState, useEffect } from "react";
 import { UserType } from "../interfaces/user-interface";
+  
 interface ThemeContextType {
   currentUser?: UserType;
   isAuth: boolean;

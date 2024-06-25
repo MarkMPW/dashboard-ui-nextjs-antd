@@ -5,9 +5,9 @@ import "./globals.css";
 
 import { Layout } from "antd";
 
-import Navbar from "./components/Navbar";
-import FooterCompo from "./components/FooterCompo";
-import AuthContextProvider from "./contexts/AuthContext";
+import Navbar from "@/components/Navbar";
+import FooterCompo from "@/components/FooterCompo";
+import AuthContextProvider from "@/contexts/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 const { Content } = Layout;

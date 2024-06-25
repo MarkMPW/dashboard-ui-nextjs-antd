@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Space, Table, TableProps, Button, Popconfirm } from "antd";
-import { UserType } from "@/app/register/page";
 
 export interface TableType {
   id: number;

@@ -3,8 +3,6 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { Layout, Input, Button, message } from "antd";
-import Navbar from "../components/Navbar";
-import FooterCompo from "../components/FooterCompo";
 import { useRouter } from "next/navigation";
 
 import { useFormik } from "formik";
@@ -13,24 +11,11 @@ import { NextPage } from "next";
 
 const CreatePost: NextPage = () => {
 
-  let initailNumber = 1
-
-  const generateId = () => {
-    return initailNumber++
-  }
-
   const { Content } = Layout;
   const route = useRouter()
 
   const [messageApi, contextHolder] = message.useMessage();
   const [loading, setLoading] = useState(false)
-
-  const success = () => {
-    messageApi.open({
-      type: 'success',
-      content: 'Create post success'
-    })
-  }
 
   const formik = useFormik({
     initialValues: {

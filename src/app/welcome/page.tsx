@@ -4,9 +4,9 @@ import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import { Layout, Popconfirm, Button } from "antd";
-import { ThemeContext } from "../components/ThemeContext";
+import { AuthContext } from "@/contexts/AuthContext";
 import { NextPage } from "next";
-import withAuth from "../HOC/withAuth";
+import withAuth from "@/HOC/withAuth";
 
 export interface AllPostsType {
   id: number;
@@ -18,7 +18,7 @@ export interface AllPostsType {
   const WelcomePage: NextPage = () => {
     const { Content } = Layout;
 
-    const { currentUser, setCurrentUser } = useContext(ThemeContext);
+    const { currentUser, setCurrentUser } = useContext(AuthContext);
     const [allPosts, setAllPosts] = useState<AllPostsType[]>([]);
     const [openPopup, setOpenPopup] = useState<number | null>(null);
     const [confirmLoading, setConfirmLoading] = useState(false);
@@ -129,41 +129,6 @@ export interface AllPostsType {
                 </div>
               </div>
             ))}
-
-            {/* User Posts Data */}
-            {/* <div>
-              <div className="shadow-xl my-10 p-10 rounded-xl border-2">
-                <h4 className="text-2xl">Post title</h4>
-                <Image
-                  className="my-3 rounded-md"
-                  src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29kaW5nfGVufDB8fDB8fHww"
-                  width={300}
-                  height={0}
-                  alt="image"
-                />
-              </div>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia nihil
-                numquam, voluptatum veniam animi dolores architecto qui, omnis est
-                quasi nisi quidem corporis sed fugit. Voluptatibus doloribus magnam
-                cupiditate alias.
-              </p>
-
-              <div className="mt-5">
-                <Link
-                  className="bg-gray-500 text-white border py-2 px-3 rounded-md text-lg my-2"
-                  href="/edit"
-                >
-                  Edit
-                </Link>
-                <Link
-                  className="bg-red-500 text-white border py-2 px-3 rounded-md text-lg my-2"
-                  href="/delete"
-                >
-                  Delete
-                </Link>
-              </div>
-            </div> */}
           </div>
         </div>
       </Content>

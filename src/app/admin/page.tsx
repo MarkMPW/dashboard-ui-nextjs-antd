@@ -7,13 +7,13 @@ import { Layout, List } from "antd";
 import { SearchOutlined, UserOutlined } from "@ant-design/icons";
 import { NextPage } from "next";
 
-import { ThemeContext } from "../components/ThemeContext";
-import withAuthTest from "../HOC/withAdminAuth";
+import { AuthContext } from "@/contexts/AuthContext";
+import withAuthTest from "@/HOC/withAdminAuth";
 
 const { Content } = Layout;
 
 const AdminPage: NextPage = () => {
-  const { setCurrentUser } = useContext(ThemeContext);
+  const { setCurrentUser } = useContext(AuthContext);
   const [totalUsers, setTotalUsers] = useState<number>(0);
   const [totalPosts, setTotalPosts] = useState<number>(0);
 

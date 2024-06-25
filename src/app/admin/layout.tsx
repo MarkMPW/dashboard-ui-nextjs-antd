@@ -1,7 +1,5 @@
 import "../globals.css";
 
-import ThemeProvider from "../components/ThemeContext";
-
 import { Layout } from "antd";
 import Sidebar from "./components/Sidebar";
 

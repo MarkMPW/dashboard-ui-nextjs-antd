@@ -1,7 +1,5 @@
 "use client";
 
-import FooterCompo from "@/app/components/FooterCompo";
-import Navbar from "@/app/components/Navbar";
 import { AllPostsType } from "@/app/welcome/page";
 import { Button, Input, Layout, Popconfirm, message } from "antd";
 import Link from "next/link";

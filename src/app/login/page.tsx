@@ -13,9 +13,8 @@ import { UserType } from "../register/page";
 import { NextPage } from "next";
 
 import InitialUserData from "../../../users.json";
-import { useAuth } from "../contexts/AuthContext";
-import { UserRole } from "../enums/role-enum";
-import { resolve } from "path";
+import { useAuth } from "@/contexts/AuthContext";
+import { UserRole } from "@/enums/role-enum";
 
 const LoginPage: NextPage = () => {
   const router = useRouter();

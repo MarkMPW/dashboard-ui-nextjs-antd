@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from 'react'
-import { ThemeContext } from '../components/ThemeContext'
 import { useRouter } from 'next/navigation'
+
+import { AuthContext } from '@/contexts/AuthContext'
 
 const withAuthTest = (WrappedComponent: React.FC) => {
   return(prop: any) => {
-    const { currentUser } = useContext(ThemeContext)
+    const { currentUser } = useContext(AuthContext)
     const isAdmin = currentUser?.role === 'admin'
     const router = useRouter()
 
