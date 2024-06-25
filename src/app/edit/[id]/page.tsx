@@ -12,49 +12,39 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { NextPage } from "next";
 
+const { Content } = Layout;
+
 interface PageProp {
   params: {
-    id: number
-  }
+    id: number;
+  };
 }
 
 const EditPage: NextPage<PageProp> = ({ params }) => {
   const route = useRouter();
-  const { Content } = Layout;
-  const [post, setPost] = useState<AllPostsType | null>(null);
-
-  const [openPopup, setOpenPopup] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
-  const success = () => {
-    messageApi.open({
-      type: "success",
-      content: "Edit successfully ",
-    });
-  };
+  const [post, setPost] = useState<AllPostsType | null>(null);
+  const [openPopup, setOpenPopup] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const showPopconfirm = () => {
-    setOpenPopup(true);
-  };
-
-  const handleCancel = () => {
-    setOpenPopup(false);
-  };
-
-  const handleOk = () => {
-    setConfirmLoading(true);
-
-    success();
-
-    setTimeout(() => {
-      setOpenPopup(false);
-      setConfirmLoading(false);
-      formik.submitForm().then(() => {
-        route.push("/welcome");
-      });
-    }, 2000);
-  };
+  const formik = useFormik({
+    initialValues: {
+      title: post?.title,
+      imageUrl: post?.imageUrl,
+      description: post?.description,
+    },
+    validationSchema: Yup.object({
+      title: Yup.string()
+        .max(15, "Reached the maximum 15")
+        .required("Required"),
+      imageUrl: Yup.string().required("Required"),
+      description: Yup.string().required("Required"),
+    }),
+    onSubmit: (values) => {
+      updatedPost(values);
+    },
+  });
 
   useEffect(() => {
     const getEditPost = localStorage.getItem("posts");
@@ -75,23 +65,30 @@ const EditPage: NextPage<PageProp> = ({ params }) => {
     }
   }, []);
 
-  const formik = useFormik({
-    initialValues: {
-      title: post?.title,
-      imageUrl: post?.imageUrl,
-      description: post?.description,
-    },
-    validationSchema: Yup.object({
-      title: Yup.string()
-        .max(15, "Reached the maximum 15")
-        .required("Required"),
-      imageUrl: Yup.string().required("Required"),
-      description: Yup.string().required("Required"),
-    }),
-    onSubmit: (values) => {
-      updatedPost(values)
-    },
-  });
+  const showPopconfirm = () => {
+    setOpenPopup(true);
+  };
+
+  const handleCancel = () => {
+    setOpenPopup(false);
+  };
+
+  const handleOkPopupConfirm = () => {
+    setConfirmLoading(true);
+
+    messageApi.open({
+      type: "success",
+      content: "Edit successfully ",
+    });
+
+    setTimeout(() => {
+      setOpenPopup(false);
+      setConfirmLoading(false);
+      formik.submitForm().then(() => {
+        route.push("/welcome");
+      });
+    }, 2000);
+  };
 
   const updatedPost = (values: any) => {
     const getAllPosts = localStorage.getItem("posts");
@@ -156,7 +153,7 @@ const EditPage: NextPage<PageProp> = ({ params }) => {
                 title="You want to edit this post?"
                 open={openPopup}
                 onCancel={handleCancel}
-                onConfirm={handleOk}
+                onConfirm={handleOkPopupConfirm}
                 okButtonProps={{ loading: confirmLoading }}
               >
                 <Button

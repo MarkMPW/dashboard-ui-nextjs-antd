@@ -10,6 +10,7 @@ import InitailUserData from '../../../users.json'
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { NextPage } from "next";
+const { Content } = Layout;
 
 export interface UserType {
   id: number;
@@ -21,7 +22,6 @@ export interface UserType {
 }
 
 const RegisterPage: NextPage = () => {
-  const { Content } = Layout;
   const router = useRouter();
 
   const formik = useFormik({
@@ -175,7 +175,7 @@ const RegisterPage: NextPage = () => {
                 <hr className="my-3" />
 
                 <p>
-                  Already have an acount? Go to{" "}
+                  Already have an account? Go to{" "}
                   <Link href="/login" className="text-blue-700 hover:underline">
                     Login
                   </Link>{" "}

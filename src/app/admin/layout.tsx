@@ -12,12 +12,10 @@ export default function AdminLayout({
 }>) {
   return (
     <Layout>
-      <ThemeProvider>
         <Sidebar />
         <Layout className="p-[16px]">
           {children}
         </Layout>
-      </ThemeProvider>
     </Layout>
   );
 }

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
 
 import { ThemeContext } from "../components/ThemeContext";
+import { Spin } from "antd";
 
 const withAuth = (WrappedComponent: React.FC) => {
   const Wrapper = (props: any) => {
@@ -21,7 +22,7 @@ const withAuth = (WrappedComponent: React.FC) => {
     }, []);
 
     if(isLoading) {
-      return <p>Please login first ;P</p>
+      return <Spin/>
     }
 
     return <WrappedComponent {...props} />;

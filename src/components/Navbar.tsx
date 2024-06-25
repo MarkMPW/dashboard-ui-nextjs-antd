@@ -1,18 +1,19 @@
 "useClient";
 
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import Logo from "/public/next.svg";
 import Image from "next/image";
-import { ThemeContext } from "./ThemeContext";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../contexts/AuthContext";
 
 const Navbar: React.FC = () => {
   const route = useRouter();
-  const { currentUser, setCurrentUser } = useContext(ThemeContext);
+  const { currentUser, setCurrentUser, isAuth, isAuthHandler } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem("currentUser")
+    localStorage.removeItem("currentUser");
+    isAuthHandler(false)
     setCurrentUser(undefined);
     route.push("/");
   };
@@ -26,7 +27,7 @@ const Navbar: React.FC = () => {
               <Image src={Logo} width={100} height={100} alt="NextJs Logo" />
             </Link>
           </div>
-          {currentUser ? (
+          {isAuth ? (
             <ul>
               <li>
                 <button onClick={handleLogout}>Logout</button>
