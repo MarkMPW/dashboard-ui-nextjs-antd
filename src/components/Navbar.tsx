@@ -9,7 +9,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 const Navbar: React.FC = () => {
   const route = useRouter();
-  const { currentUser, setCurrentUser, isAuth, isAuthHandler } = useAuth();
+  const { setCurrentUser, isAuth, isAuthHandler } = useAuth();
 
   const handleLogout = () => {
     localStorage.removeItem("currentUser");

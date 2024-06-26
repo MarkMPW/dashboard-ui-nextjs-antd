@@ -5,14 +5,14 @@ import React, { useEffect, useState } from 'react'
 import PostTable from '@/components/admin/PostTable'
 import { NextPage } from 'next'
 
+import { getPosts } from '@/utils/getData'
+
 const ManagePostPage: NextPage = () => {
 
   const [postData, setPostData] = useState<AllPostsType[]>([])
 
   useEffect(()=> {
-    const getPosts = localStorage.getItem('posts')
-    const posts = getPosts ? JSON.parse(getPosts) : null
-
+    const posts = getPosts()
     setPostData(posts)
   }, []) 
 
