@@ -31,12 +31,10 @@ const AdminPage: NextPage = () => {
 
   useEffect(() => {
     try {
-      const storedUser = localStorage.getItem("currentUser");
+      const getLocalStorageCurrentUser = localStorage.getItem("currentUser");
 
-      console.log("currentUser in admin: ", storedUser);
-
-      if (storedUser) {
-        setCurrentUser(JSON.parse(storedUser));
+      if (getLocalStorageCurrentUser) {
+        setCurrentUser(JSON.parse(getLocalStorageCurrentUser));
       } else {
         setCurrentUser(undefined);
       }
