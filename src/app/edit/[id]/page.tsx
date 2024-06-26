@@ -1,7 +1,7 @@
 "use client";
 
 import { AllPostsType } from "@/app/welcome/page";
-import { Button, Input, Layout, Popconfirm, message } from "antd";
+import { Button, Input, Popconfirm, message } from "antd";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -10,13 +10,17 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { NextPage } from "next";
 
-const { Content } = Layout;
-
 interface PageProp {
   params: {
     id: number;
   };
 }
+
+const yupValidationSchema = Yup.object({
+  title: Yup.string().max(15, "Reached the maximum 15").required("Required"),
+  imageUrl: Yup.string().required("Required"),
+  description: Yup.string().required("Required"),
+});
 
 const EditPage: NextPage<PageProp> = ({ params }) => {
   const route = useRouter();
@@ -32,13 +36,7 @@ const EditPage: NextPage<PageProp> = ({ params }) => {
       imageUrl: post?.imageUrl,
       description: post?.description,
     },
-    validationSchema: Yup.object({
-      title: Yup.string()
-        .max(15, "Reached the maximum 15")
-        .required("Required"),
-      imageUrl: Yup.string().required("Required"),
-      description: Yup.string().required("Required"),
-    }),
+    validationSchema: yupValidationSchema,
     onSubmit: (values) => {
       updatedPost(values);
     },
@@ -63,11 +61,11 @@ const EditPage: NextPage<PageProp> = ({ params }) => {
     }
   }, []);
 
-  const showPopconfirm = () => {
+  const handleShowPopup = () => {
     setOpenPopup(true);
   };
 
-  const handleCancel = () => {
+  const handleCancelPopup = () => {
     setOpenPopup(false);
   };
 
@@ -107,68 +105,66 @@ const EditPage: NextPage<PageProp> = ({ params }) => {
   };
 
   return (
-    <Layout>
+    <section>
       {contextHolder}
-      <Content>
-        <div className="flex-grow">
-          <div className="container mx-auto shadow-xl my-10 p-10 rounded-xl">
-            <Link
-              href="/welcome"
-              className="bg-gray-500 inline-block text-white border py-2 px-3 rounded my-2"
-            >
-              Go back
-            </Link>
-            <hr className="my-3" />
-            <h3 className="text-xl">Edit Post</h3>
+      <div className="flex-grow">
+        <div className="container mx-auto shadow-xl my-10 p-10 rounded-xl">
+          <Link
+            href="/welcome"
+            className="bg-gray-500 inline-block text-white border py-2 px-3 rounded my-2"
+          >
+            Go back
+          </Link>
+          <hr className="my-3" />
+          <h3 className="text-xl">Edit Post</h3>
 
-            <form onSubmit={formik.handleSubmit}>
-              <Input
-                type="text"
-                className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
-                placeholder="Post title"
-                name="title"
-                value={formik.values.title}
-                onChange={formik.handleChange}
-              />
-              <Input
-                type="text"
-                className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
-                placeholder="Post Img url"
-                name="imageUrl"
-                value={formik.values.imageUrl}
-                onChange={formik.handleChange}
-              />
-              <textarea
-                cols={30}
-                rows={10}
-                placeholder="Enter your post content"
-                className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
-                name="description"
-                value={formik.values.description}
-                onChange={formik.handleChange}
-              ></textarea>
-              <Popconfirm
-                title="You want to edit this post?"
-                open={openPopup}
-                onCancel={handleCancel}
-                onConfirm={handleOkPopupConfirm}
-                okButtonProps={{ loading: confirmLoading }}
+          <form onSubmit={formik.handleSubmit}>
+            <Input
+              type="text"
+              className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
+              placeholder="Post title"
+              name="title"
+              value={formik.values.title}
+              onChange={formik.handleChange}
+            />
+            <Input
+              type="text"
+              className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
+              placeholder="Post Img url"
+              name="imageUrl"
+              value={formik.values.imageUrl}
+              onChange={formik.handleChange}
+            />
+            <textarea
+              cols={30}
+              rows={10}
+              placeholder="Enter your post content"
+              className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
+              name="description"
+              value={formik.values.description}
+              onChange={formik.handleChange}
+            ></textarea>
+            <Popconfirm
+              title="You want to edit this post?"
+              open={openPopup}
+              onCancel={handleCancelPopup}
+              onConfirm={handleOkPopupConfirm}
+              okButtonProps={{ loading: confirmLoading }}
+            >
+              <Button
+                type="primary"
+                className="py-2 px-3 rounded-md text-lg my-2"
+                // htmlType="submit"
+                // loading={loading}
+                onClick={handleShowPopup}
               >
-                <Button
-                  type="primary"
-                  className="py-2 px-3 rounded-md text-lg my-2"
-                  // htmlType="submit"
-                  // loading={loading}
-                  onClick={showPopconfirm}
-                >
-                  Edit post
-                </Button>
-              </Popconfirm>
-            </form>
-          </div>
+                Edit post
+              </Button>
+            </Popconfirm>
+          </form>
         </div>
-      </Content>
-    </Layout>
+      </div>
+    </section>
   );
 };
 

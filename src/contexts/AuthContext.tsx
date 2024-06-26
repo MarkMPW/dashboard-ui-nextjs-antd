@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, createContext, useState, useEffect } from "react";
+import React, { useContext, createContext, useState, useEffect, useMemo } from "react";
 import { UserType } from "../interfaces/user-interface";
   
 interface ThemeContextType {
@@ -51,14 +51,16 @@ const AuthContextProvider: React.FC<ChildrenProp> = ({ children }) => {
     };
   }, []);
 
+  const contextValue = useMemo(() => ({
+    isAuth,
+    currentUser,
+    setCurrentUser,
+    isAuthHandler,
+  }), [isAuth, currentUser])
+
   return (
     <AuthContext.Provider
-      value={{
-        isAuth,
-        currentUser,
-        setCurrentUser,
-        isAuthHandler,
-      }}
+      value={contextValue}
     >
       {children}
     </AuthContext.Provider>

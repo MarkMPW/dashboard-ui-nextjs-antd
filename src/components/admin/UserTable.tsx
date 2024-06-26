@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Space, Table, TableProps, Button, Popconfirm } from "antd";
-import { UserType } from "@/app/register/page";
 
 export interface TableType {
   id: number;
@@ -22,20 +21,20 @@ const UserTable: React.FC<TablePropsType> = ({ dataSource }) => {
   const [open, setOpen] = useState<number | null>(null);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const showPopconfirm = (id: number) => {
+  const handleShowPopup = (id: number) => {
     setOpen(id);
   };
 
-  const handleCancel = () => {
+  const handleCancelPopup = () => {
     console.log("Clicked cancel button");
     setOpen(null);
   };
 
-  const handleEdit = (id: number) => {
+  const handleNavigateToEdit = (id: number) => {
     route.push(`/admin/users/${id}`);
   };
 
-  const handleOk = (userId: number) => {
+  const handleOkPopupConfirm = (userId: number) => {
     setConfirmLoading(true);
 
     const updateDataSource = dataSource.filter(
@@ -77,20 +76,20 @@ const UserTable: React.FC<TablePropsType> = ({ dataSource }) => {
       key: "action",
       render: (_, record) => (
         <Space>
-          <Button type="primary" onClick={() => handleEdit(record.id)}>
+          <Button type="primary" onClick={() => handleNavigateToEdit(record.id)}>
             Edit
           </Button>
           <Popconfirm
             title="You want to delete this user?"
-            onCancel={handleCancel}
+            onCancel={handleCancelPopup}
             open={open === record?.id}
             okButtonProps={{ loading: confirmLoading }}
-            onConfirm={() => handleOk(record.id)}
+            onConfirm={() => handleOkPopupConfirm(record.id)}
           >
             <Button
               danger
               type="primary"
-              onClick={() => showPopconfirm(record?.id)}
+              onClick={() => handleShowPopup(record?.id)}
             >
               Delete
             </Button>

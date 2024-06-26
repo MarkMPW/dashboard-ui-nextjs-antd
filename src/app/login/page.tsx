@@ -18,14 +18,8 @@ import { UserRole } from "@/enums/role-enum";
 
 const LoginPage: NextPage = () => {
   const router = useRouter();
-  const { setCurrentUser, isAuthHandler, isAuth } = useAuth();
-  const [loading, setLoading] = useState(false);
-
-  const failed = () => {
-    message.error({
-      content: "Fail to login!",
-    });
-  };
+  const { setCurrentUser, isAuthHandler } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -39,57 +33,60 @@ const LoginPage: NextPage = () => {
         .required("Required"),
     }),
     onSubmit: async (values, { setSubmitting }) => {
-      handleLogin(values, setSubmitting);
+      handleLogin(values);
     },
   });
 
-  const handleLogin = async (
-    values: { email: string; password: string },
-    setSubmitting: any
-  ) => {
-    return new Promise<void>((resolve) => {
-      try {
-        setLoading(true);
-        const userLocalData = localStorage.getItem("userData");
-        const users = userLocalData ? JSON.parse(userLocalData) : [];
-
-        const allUser = [...InitialUserData, ...users];
-
-        const findUser = allUser.find(
-          (user: UserType) =>
-            user.email === values.email && user.password === values.password
-        );
-
-        if (!findUser) {
-          // ไม่เจอ user
-          failed();
-          return;
-        }
-
-        setCurrentUser(findUser);
-        isAuthHandler(true);
-        localStorage.setItem("currentUser", JSON.stringify(findUser));
-        message.success("Login successful!", 2, () => {
-          const { role } = findUser || undefined;
-          if (role === UserRole.user) {
-            router.push("/welcome");
-          } else if (role === UserRole.admin) {
-            router.push("/admin");
-          }
-        });
-      } catch (error: unknown) {
-        console.log("Login failed: ", error);
-        failed();
-      } finally {
-        setLoading(false);
-        resolve();
-        console.log("finally");
-      }
-    }).finally(() => {
-      setSubmitting(false);
+  const failed = () => {
+    message.error({
+      content: "Fail to login!",
     });
   };
 
+  const handleLogin = async (
+    values: { email: string; password: string },
+  ) => {
+    setIsLoading(true);
+  
+    try {
+      const userLocalData = localStorage.getItem("userData");
+      const users = userLocalData ? JSON.parse(userLocalData) : [];
+  
+      const allUser = [...InitialUserData, ...users];
+  
+      const findUser = allUser.find(
+        (user: UserType) =>
+          user.email === values.email && user.password === values.password
+      );
+  
+      if (!findUser) {
+        failed();
+        return;
+      }
+  
+      setCurrentUser(findUser);
+      isAuthHandler(true);
+      localStorage.setItem("currentUser", JSON.stringify(findUser));
+
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000)
+
+      message.success("Login successful!", 1, () => {
+        const { role } = findUser;
+        if (role === UserRole.user) {
+          router.push("/welcome");
+        } else if (role === UserRole.admin) {
+          router.push("/admin");
+        }
+      });
+
+    } catch (error: unknown) {
+      console.error("Login failed: ", error);
+      failed();
+    }
+  };
+  
   return (
     <section className="flex-grow">
       <div className="flex justify-center items-center">
@@ -126,8 +123,7 @@ const LoginPage: NextPage = () => {
               type="primary"
               size="large"
               htmlType="submit"
-              //   loading={loading}
-              disabled={formik.isSubmitting}
+              loading={isLoading}
             >
               Sign Up
             </Button>

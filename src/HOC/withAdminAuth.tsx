@@ -9,9 +9,6 @@ const withAuthTest = (WrappedComponent: React.FC) => {
     const isAdmin = currentUser?.role === 'admin'
     const router = useRouter()
 
-    console.log('currentUser: ', currentUser)
-    console.log('isAdmin: ', isAdmin)
-
     useEffect(() => {
       if(!isAdmin) {
         console.log('navigate user to login page')
