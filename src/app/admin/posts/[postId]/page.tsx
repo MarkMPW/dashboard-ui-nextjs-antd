@@ -20,6 +20,14 @@ interface PageProp {
   };
 }
 
+const yupValidationSchema = Yup.object({
+  title: Yup.string().max(15, "Reached maximum 15").required("Required"),
+  imageUrl: Yup.string().required("Required"),
+  description: Yup.string()
+    .max(50, "Reached maimum 50")
+    .required("Required"),
+})
+
 const PostIdPage: NextPage<PageProp> = ({ params }) => {
   const route = useRouter();
   const [editPost, setEditPost] = useState<AllPostsType | null>(null);
@@ -32,13 +40,7 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
       imageUrl: editPost?.imageUrl,
       description: editPost?.description,
     },
-    validationSchema: Yup.object({
-      title: Yup.string().max(15, "Reached maximum 15").required("Required"),
-      imageUrl: Yup.string().required("Required"),
-      description: Yup.string()
-        .max(50, "Reached maimum 50")
-        .required("Required"),
-    }),
+    validationSchema: yupValidationSchema,
     onSubmit: (values) => {
       handleUpdatePost(values);
     },

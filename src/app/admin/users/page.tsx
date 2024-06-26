@@ -4,15 +4,14 @@ import React, { useEffect, useState } from 'react'
 import UserTable, { TableType } from '@/components/admin/UserTable'
 import { NextPage } from 'next'
 
+import { getUsers } from '@/utils/getData'
+
 const ManageUserPage: NextPage = () => {
   const [userData, setUserData] = useState<TableType[]>([])
 
   useEffect(() => {
-    const getUsers = localStorage.getItem('userData')
-    const users = getUsers ? JSON.parse(getUsers) : null
-
+    const users = getUsers()
     setUserData(users)
-
   }, [])
 
   return (
