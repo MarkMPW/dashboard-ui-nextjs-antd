@@ -29,7 +29,6 @@ const AuthContextProvider: React.FC<ChildrenProp> = ({ children }) => {
     undefined
   );
   const [isAuth, setIsAuth] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const isAuthHandler = (auth: boolean) => setIsAuth(auth);
 
