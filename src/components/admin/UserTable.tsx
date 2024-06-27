@@ -18,16 +18,7 @@ interface TablePropsType {
 
 const UserTable: React.FC<TablePropsType> = ({ dataSource }) => {
   const route = useRouter();
-  const [open, setOpen] = useState<number | null>(null);
   const [confirmLoading, setConfirmLoading] = useState(false);
-
-  const handleShowPopup = (id: number) => {
-    setOpen(id);
-  };
-
-  const handleCancelPopup = () => {
-    setOpen(null);
-  };
 
   const handleNavigateToEdit = (id: number) => {
     route.push(`/admin/users/${id}`);
@@ -43,7 +34,6 @@ const UserTable: React.FC<TablePropsType> = ({ dataSource }) => {
     setTimeout(() => {
       localStorage.setItem("userData", JSON.stringify(updateDataSource));
 
-      setOpen(null);
       setConfirmLoading(false);
       window.location.reload();
     }, 500);
@@ -80,15 +70,12 @@ const UserTable: React.FC<TablePropsType> = ({ dataSource }) => {
           </Button>
           <Popconfirm
             title="You want to delete this user?"
-            onCancel={handleCancelPopup}
-            open={open === record?.id}
             okButtonProps={{ loading: confirmLoading }}
             onConfirm={() => handleOkPopupConfirm(record.id)}
           >
             <Button
               danger
               type="primary"
-              onClick={() => handleShowPopup(record?.id)}
             >
               Delete
             </Button>

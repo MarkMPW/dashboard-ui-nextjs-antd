@@ -21,16 +21,7 @@ const PostTable: React.FC<PostTableProps> = ({ dataSource}) => {
 
   const route = useRouter()
 
-  const [openPopup, setOpenPopup] = useState<number | null>(null);
   const [confirmLoading, setConfirmLoading] = useState(false)
-
-  const handleShowPopup = (id: number) => {
-    setOpenPopup(id);
-  };
-
-  const handleCancelPopup = () => {
-    setOpenPopup(null);
-  };
 
   const handleNaviEdit = (id: number) => {
     route.push(`/admin/posts/${id}`)
@@ -44,7 +35,6 @@ const PostTable: React.FC<PostTableProps> = ({ dataSource}) => {
 
       setTimeout(() => {
         localStorage.setItem('posts', JSON.stringify(updateDataSource))
-        setOpenPopup(null)
         setConfirmLoading(false)
         window.location.reload()
       }, 1000)
@@ -83,15 +73,12 @@ const PostTable: React.FC<PostTableProps> = ({ dataSource}) => {
           <Button type='primary' onClick={()=> handleNaviEdit(record.id)}>Edit</Button>
           <Popconfirm
             title='You want to delete this post?'
-            onCancel={handleCancelPopup}
-            open={openPopup === record?.id}
             okButtonProps={{ loading: confirmLoading }}
             onConfirm={()=> handleConfirmPopup(record.id)}
           >
             <Button 
               danger 
               type='primary'
-              onClick={()=> handleShowPopup(record?.id)}
             >
               Delete
             </Button>
