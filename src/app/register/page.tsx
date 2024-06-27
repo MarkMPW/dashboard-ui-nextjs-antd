@@ -87,7 +87,7 @@ const RegisterPage: NextPage = () => {
   };
 
   return (
-    <div className="flex-grow">
+    <section className="flex-grow">
       <div className="flex justify-center items-center">
         <div className="w-[400px] shadow-xl p-10 mt-5 rounded-xl bg-[#cdd7e5]">
           <h3 className="text-3xl text-[#424b66]">Register</h3>
@@ -169,7 +169,7 @@ const RegisterPage: NextPage = () => {
           </form>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -1,9 +1,12 @@
-export const getPosts = () => {
-  const getLocalStoragePost = localStorage.getItem('posts')
-  return getLocalStoragePost ? JSON.parse(getLocalStoragePost) : []
-}
+const getLocalStorage = (dataType: string) => {
+  const getLocalStorageData = localStorage.getItem(dataType);
+  return getLocalStorageData ? JSON.parse(getLocalStorageData) : [];
+};
 
-export const getUsers = () => {
-  const getLocalStorageUser = localStorage.getItem('userData')
-  return getLocalStorageUser ? JSON.parse(getLocalStorageUser) : []
-}
+export const LocalStorage = () => ({
+  getPost: () => getLocalStorage('posts'),
+  getUsers: () => getLocalStorage('userData'),
+  getCurrentUser: () => getLocalStorage('currentUser')
+});
+
+export default { LocalStorage }

@@ -12,7 +12,7 @@ import * as Yup from "yup";
 import { AllPostsType } from "@/app/welcome/page";
 import { NextPage } from "next";
 
-import { getPosts } from "@/utils/getData";
+import { LocalStorage } from "@/utils/getData";
 
 interface PageProp {
   params: {
@@ -23,22 +23,19 @@ interface PageProp {
 const yupValidationSchema = Yup.object({
   title: Yup.string().max(15, "Reached maximum 15").required("Required"),
   imageUrl: Yup.string().required("Required"),
-  description: Yup.string()
-    .max(50, "Reached maimum 50")
-    .required("Required"),
-})
+  description: Yup.string().max(50, "Reached maimum 50").required("Required"),
+});
 
 const PostIdPage: NextPage<PageProp> = ({ params }) => {
   const route = useRouter();
-  const [editPost, setEditPost] = useState<AllPostsType | null>(null);
   const [openPopup, setOpenPopup] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      title: editPost?.title,
-      imageUrl: editPost?.imageUrl,
-      description: editPost?.description,
+      title: "",
+      imageUrl: "",
+      description: "",
     },
     validationSchema: yupValidationSchema,
     onSubmit: (values) => {
@@ -48,12 +45,11 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
   });
 
   useEffect(() => {
-    const posts = getPosts();
+    const posts = LocalStorage().getPost();
     const findEditPost = posts.find(
       (post: AllPostsType) => post.id === Number(params.postId)
     );
     if (findEditPost) {
-      setEditPost(findEditPost);
       formik.setValues({
         title: findEditPost?.title,
         imageUrl: findEditPost?.imageUrl,
@@ -91,13 +87,11 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
   };
 
   const handleResetField = () => {
-    if (editPost) {
-      formik.resetForm();
-    }
+    formik.resetForm();
   };
 
   const handleUpdatePost = (values: any) => {
-    const posts = getPosts();
+    const posts = LocalStorage().getPost();
     const updatedPost = posts.map((post: AllPostsType) =>
       post.id === Number(params.postId)
         ? {
@@ -112,7 +106,7 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
   };
 
   return (
-    <div className="flex-grow">
+    <section className="flex-grow">
       <div className="container mx-auto shadow-xl my-10 p-10 rounded-xl">
         <Link
           href="/admin/posts"
@@ -125,7 +119,7 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
 
         <form onSubmit={formik.handleSubmit}>
           <div className="mt-3">
-            <h1 className="text-xl">Title:</h1>
+            <label htmlFor="title" className="text-xl">Title:</label>
             <Input
               type="text"
               className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
@@ -193,7 +187,7 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
           </Button>
         </form>
       </div>
-    </div>
+    </section>
   );
 };
 

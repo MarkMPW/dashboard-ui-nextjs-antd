@@ -8,7 +8,7 @@ import { AuthContext } from "@/contexts/AuthContext";
 import { NextPage } from "next";
 import withAuth from "@/HOC/withAuth";
 
-import { getPosts } from "@/utils/getData";
+import { LocalStorage } from "@/utils/getData";
 
 export interface AllPostsType {
   id: number;
@@ -26,17 +26,14 @@ const WelcomePage: NextPage = () => {
 
   useEffect(() => {
     try {
-      const getLocalStoragePosts = getPosts()
+      const getLocalStoragePosts = LocalStorage().getPost()
 
       setAllPosts(getLocalStoragePosts)
 
-      const storedUser = localStorage.getItem("currentUser");
+      const storedUser = LocalStorage().getCurrentUser()
 
-      if (storedUser) {
-        setCurrentUser(JSON.parse(storedUser));
-      } else {
-        setCurrentUser(undefined);
-      }
+      setCurrentUser(storedUser)
+
     } catch (error: unknown) {
       console.log("failed to get currentUser: ", error);
     }
@@ -63,7 +60,7 @@ const WelcomePage: NextPage = () => {
       setAllPosts(deletePost);
       setOpenPopup(null);
       setConfirmLoading(false);
-    }, 2000);
+    }, 500);
   };
 
   return (
@@ -85,7 +82,7 @@ const WelcomePage: NextPage = () => {
           </div>
         </div>
 
-        {allPosts.map((post, index) => (
+        {allPosts.map((post) => (
           <div key={post.id}>
             <div className="shadow-xl my-10 p-10 rounded-xl border-2">
               <h4 className="text-2xl">{post.title}</h4>

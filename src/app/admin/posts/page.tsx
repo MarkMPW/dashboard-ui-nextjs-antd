@@ -5,22 +5,26 @@ import React, { useEffect, useState } from 'react'
 import PostTable from '@/components/admin/PostTable'
 import { NextPage } from 'next'
 
-import { getPosts } from '@/utils/getData'
+import { LocalStorage } from '@/utils/getData'
 
 const ManagePostPage: NextPage = () => {
 
   const [postData, setPostData] = useState<AllPostsType[]>([])
 
   useEffect(()=> {
-    const posts = getPosts()
-    setPostData(posts)
+    const loadPost = () => {
+      const posts = LocalStorage().getPost()
+      setPostData(posts)
+    }
+
+    loadPost()
   }, []) 
 
   return (
-    <div>
+    <section>
       <h1 className='text-3xl mb-5'>Manage Posts</h1>
       <PostTable dataSource={postData}/>
-    </div>
+    </section>
   )
 }
 

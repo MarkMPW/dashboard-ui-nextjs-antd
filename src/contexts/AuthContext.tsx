@@ -2,6 +2,7 @@
 
 import React, { useContext, createContext, useState, useEffect, useMemo } from "react";
 import { UserType } from "../interfaces/user-interface";
+import { LocalStorage } from "@/utils/getData";
   
 interface ThemeContextType {
   currentUser?: UserType;
@@ -34,9 +35,9 @@ const AuthContextProvider: React.FC<ChildrenProp> = ({ children }) => {
 
   useEffect(() => {
     const getCurrentUserFormLocalStorage = () => {
-      const storedUser = localStorage.getItem("currentUser");
+      const storedUser = LocalStorage().getCurrentUser()
       if (storedUser) {
-        setCurrentUser(JSON.parse(storedUser));
+        setCurrentUser(storedUser);
         isAuthHandler(true);
       } else {
         isAuthHandler(false);

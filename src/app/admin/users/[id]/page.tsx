@@ -12,7 +12,7 @@ import * as Yup from "yup";
 import { UserType } from "@/app/register/page";
 import { NextPage } from "next";
 
-import { getUsers } from "@/utils/getData";
+import { LocalStorage } from "@/utils/getData";
 
 interface PageProp {
   params: {
@@ -28,15 +28,14 @@ const yupValidationSchema = Yup.object({
 
 const EditUserPage: NextPage<PageProp> = ({ params }) => {
   const route = useRouter();
-  const [editUser, setEditUser] = useState<UserType | null>(null);
   const [openPopup, setOpenPopup] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      userName: editUser?.userName,
-      email: editUser?.email,
-      password: editUser?.password,
+      userName: "",
+      email: "",
+      password: "",
     },
     validationSchema: yupValidationSchema,
     onSubmit: (values) => {
@@ -46,15 +45,13 @@ const EditUserPage: NextPage<PageProp> = ({ params }) => {
   });
 
   useEffect(() => {
-    const users = getUsers();
+    const users = LocalStorage().getUsers();
 
     const findUser = users.find(
       (user: UserType) => user.id === Number(params.id)
     );
 
     if (findUser) {
-      setEditUser(findUser);
-
       formik.setValues({
         userName: findUser.userName,
         email: findUser.email,
@@ -93,13 +90,11 @@ const EditUserPage: NextPage<PageProp> = ({ params }) => {
   };
 
   const handleResetField = () => {
-    if (editUser) {
-      formik.resetForm();
-    }
+    formik.resetForm();
   };
 
   const handleUpdateUser = (values: any) => {
-    const users = getUsers();
+    const users = LocalStorage().getUsers()
 
     const updateUser = users.map((user: UserType) =>
       user.id === Number(params.id)
@@ -116,7 +111,7 @@ const EditUserPage: NextPage<PageProp> = ({ params }) => {
   };
 
   return (
-    <div className="flex-grow">
+    <section className="flex-grow">
       <div className="container mx-auto shadow-xl my-10 p-10 rounded-xl">
         <Link
           href="/admin/users"
@@ -129,7 +124,7 @@ const EditUserPage: NextPage<PageProp> = ({ params }) => {
 
         <form onSubmit={formik.handleSubmit}>
           <div className="mt-3">
-            <h1 className="text-xl">Username:</h1>
+            <label htmlFor="userName" className="text-xl">Username:</label>
             <Input
               type="text"
               className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
@@ -144,7 +139,7 @@ const EditUserPage: NextPage<PageProp> = ({ params }) => {
             )}
           </div>
           <div className="mt-3">
-            <h1 className="text-xl">Email:</h1>
+            <label htmlFor='email' className="text-xl">Email:</label>
             <Input
               type="text"
               className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
@@ -159,7 +154,7 @@ const EditUserPage: NextPage<PageProp> = ({ params }) => {
             )}
           </div>
           <div className="mt-3">
-            <h1 className="text-xl">Password:</h1>
+            <label htmlFor="password" className="text-xl">Password:</label>
             <Input
               type="text"
               className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
@@ -200,7 +195,7 @@ const EditUserPage: NextPage<PageProp> = ({ params }) => {
           </Button>
         </form>
       </div>
-    </div>
+    </section>
   );
 };
 

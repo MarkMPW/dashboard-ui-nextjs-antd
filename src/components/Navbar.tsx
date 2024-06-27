@@ -1,4 +1,4 @@
-"useClient";
+"use Client";
 
 import React from "react";
 import Link from "next/link";
@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between items-center p-4">
           <div>
             <Link href="/">
-              <Image src={Logo} width={100} height={100} alt="NextJs Logo" />
+              <Image src='/next.svg' width={100} height={100} alt="NextJs Logo" />
             </Link>
           </div>
           {isAuth ? (

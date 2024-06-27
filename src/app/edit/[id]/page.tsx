@@ -25,16 +25,14 @@ const yupValidationSchema = Yup.object({
 const EditPage: NextPage<PageProp> = ({ params }) => {
   const route = useRouter();
   const [messageApi, contextHolder] = message.useMessage();
-
-  const [post, setPost] = useState<AllPostsType | null>(null);
   const [openPopup, setOpenPopup] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
-      title: post?.title,
-      imageUrl: post?.imageUrl,
-      description: post?.description,
+      title: '',
+      imageUrl: '',
+      description: '',
     },
     validationSchema: yupValidationSchema,
     onSubmit: (values) => {
@@ -51,8 +49,6 @@ const EditPage: NextPage<PageProp> = ({ params }) => {
     );
 
     if (editPost) {
-      setPost(editPost);
-
       formik.setValues({
         title: editPost.title,
         imageUrl: editPost.imageUrl,

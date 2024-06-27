@@ -64,7 +64,7 @@ const CreatePost: NextPage = () => {
   }
 
   return (
-    <div className="flex-grow">
+    <section className="flex-grow">
       <div className="container mx-auto shadow-xl my-10 p-10 rounded-xl">
         <Link
           href="/welcome"
@@ -122,7 +122,7 @@ const CreatePost: NextPage = () => {
           </Button>
         </form>
       </div>
-    </div>
+    </section>
   );
 };
 

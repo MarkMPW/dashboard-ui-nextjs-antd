@@ -10,6 +10,8 @@ import { NextPage } from "next";
 import { AuthContext } from "@/contexts/AuthContext";
 import withAuthTest from "@/HOC/withAdminAuth";
 
+import { LocalStorage } from "@/utils/getData";
+
 const { Content } = Layout;
 
 const AdminPage: NextPage = () => {
@@ -18,11 +20,11 @@ const AdminPage: NextPage = () => {
   const [totalPosts, setTotalPosts] = useState<number>(0);
 
   useEffect(() => {
-    const getPosts = localStorage.getItem("posts");
-    const getUsers = localStorage.getItem("userData");
+    const getPosts = LocalStorage().getPost()
+    const getUsers = LocalStorage().getUsers()
 
-    const posts = getPosts ? JSON.parse(getPosts).length : 0;
-    const users = getUsers ? JSON.parse(getUsers).length : 0;
+    const posts = getPosts.length > 0 ? getPosts.length : 0;
+    const users = getUsers.length > 0 ? getUsers.length : 0;
 
     setTotalPosts(posts);
     setTotalUsers(users);
@@ -31,13 +33,8 @@ const AdminPage: NextPage = () => {
 
   useEffect(() => {
     try {
-      const getLocalStorageCurrentUser = localStorage.getItem("currentUser");
-
-      if (getLocalStorageCurrentUser) {
-        setCurrentUser(JSON.parse(getLocalStorageCurrentUser));
-      } else {
-        setCurrentUser(undefined);
-      }
+      const getLocalStorageCurrentUser = LocalStorage().getCurrentUser()
+      setCurrentUser(getLocalStorageCurrentUser)
     } catch (error: unknown) {
       console.log("Failed to get currentUser: ", error);
     }
