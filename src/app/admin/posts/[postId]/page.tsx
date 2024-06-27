@@ -134,7 +134,7 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
             )}
           </div>
           <div className="mt-3">
-            <h1 className="text-xl">Image URL:</h1>
+            <label htmlFor="imageUrl" className="text-xl">Image URL:</label>
             <Input
               type="text"
               className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
@@ -149,7 +149,7 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
             )}
           </div>
           <div className="mt-3">
-            <h1 className="text-xl">Description:</h1>
+            <label htmlFor="description" className="text-xl">Description:</label>
             <textarea
               className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
               placeholder="Description"

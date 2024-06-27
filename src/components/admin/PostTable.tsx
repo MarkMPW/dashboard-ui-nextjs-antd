@@ -29,7 +29,6 @@ const PostTable: React.FC<PostTableProps> = ({ dataSource}) => {
   };
 
   const handleCancelPopup = () => {
-    console.log('Clicked cancel button');
     setOpenPopup(null);
   };
 
