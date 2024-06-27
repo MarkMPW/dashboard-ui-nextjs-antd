@@ -48,7 +48,7 @@ const PostTable: React.FC<PostTableProps> = ({ dataSource}) => {
         setOpenPopup(null)
         setConfirmLoading(false)
         window.location.reload()
-      }, 2000)
+      }, 1000)
     }
   }
 

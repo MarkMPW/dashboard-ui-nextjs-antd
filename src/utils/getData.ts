@@ -4,9 +4,9 @@ const getLocalStorage = (dataType: string) => {
 };
 
 export const LocalStorage = () => ({
-  getPost: () => getLocalStorage('posts'),
-  getUsers: () => getLocalStorage('userData'),
-  getCurrentUser: () => getLocalStorage('currentUser')
+  getPost: () => getLocalStorage("posts"),
+  getUsers: () => getLocalStorage("userData"),
+  getCurrentUser: () => getLocalStorage("currentUser"),
 });
 
-export default { LocalStorage }
+export default { LocalStorage };

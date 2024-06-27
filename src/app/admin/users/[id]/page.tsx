@@ -85,7 +85,7 @@ const EditUserPage: NextPage<PageProp> = ({ params }) => {
         formik.submitForm().then(() => {
           route.push("/admin/users");
         });
-      }, 2000);
+      }, 500);
     }
   };
 

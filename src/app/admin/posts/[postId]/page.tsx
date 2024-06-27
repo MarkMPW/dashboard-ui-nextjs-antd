@@ -82,7 +82,7 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
         formik.submitForm().then(() => {
           route.push("/admin/posts");
         });
-      }, 2000);
+      }, 500);
     }
   };
 

@@ -15,6 +15,7 @@ import { NextPage } from "next";
 import InitialUserData from "../../../users.json";
 import { useAuth } from "@/contexts/AuthContext";
 import { UserRole } from "@/enums/role-enum";
+import { delayTimeout } from "@/utils/dalay";
 
 const LoginPage: NextPage = () => {
   const router = useRouter();
@@ -68,10 +69,6 @@ const LoginPage: NextPage = () => {
       isAuthHandler(true);
       localStorage.setItem("currentUser", JSON.stringify(findUser));
 
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 2000)
-
       message.success("Login successful!", 1, () => {
         const { role } = findUser;
         if (role === UserRole.user) {
@@ -82,8 +79,10 @@ const LoginPage: NextPage = () => {
       });
 
     } catch (error: unknown) {
-      console.error("Login failed: ", error);
       failed();
+    } finally {
+      await delayTimeout(1000)
+      setIsLoading(false)
     }
   };
   

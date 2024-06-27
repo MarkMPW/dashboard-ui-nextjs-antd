@@ -26,7 +26,6 @@ const UserTable: React.FC<TablePropsType> = ({ dataSource }) => {
   };
 
   const handleCancelPopup = () => {
-    console.log("Clicked cancel button");
     setOpen(null);
   };
 
@@ -47,7 +46,7 @@ const UserTable: React.FC<TablePropsType> = ({ dataSource }) => {
       setOpen(null);
       setConfirmLoading(false);
       window.location.reload();
-    }, 2000);
+    }, 500);
   };
 
   const columns: TableProps<TableType>["columns"] = [

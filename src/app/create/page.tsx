@@ -9,6 +9,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { NextPage } from "next";
 
+import { delayTimeout } from '@/utils/dalay'
+
 const yupValidationSchema = Yup.object({
   title: Yup.string()
     .max(15, "Reached the maximum 15")
@@ -39,9 +41,7 @@ const CreatePost: NextPage = () => {
 
     const storedPosts = localStorage.getItem("posts");
 
-    await new Promise((resolve) => {
-      setTimeout(resolve, 4000);
-    });
+    await delayTimeout(500)
 
     const newPost = {
       id: Date.now(),

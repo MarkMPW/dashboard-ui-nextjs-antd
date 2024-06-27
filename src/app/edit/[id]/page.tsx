@@ -79,7 +79,7 @@ const EditPage: NextPage<PageProp> = ({ params }) => {
       formik.submitForm().then(() => {
         route.push("/welcome");
       });
-    }, 2000);
+    }, 1000);
   };
 
   const updatedPost = (values: any) => {

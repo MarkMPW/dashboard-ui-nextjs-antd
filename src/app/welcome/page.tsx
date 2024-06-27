@@ -44,7 +44,6 @@ const WelcomePage: NextPage = () => {
   };
 
   const handleCancelPopup = () => {
-    console.log("Clicked cancel button");
     setOpenPopup(null);
   };
 
@@ -61,6 +60,7 @@ const WelcomePage: NextPage = () => {
       setOpenPopup(null);
       setConfirmLoading(false);
     }, 500);
+
   };
 
   return (
