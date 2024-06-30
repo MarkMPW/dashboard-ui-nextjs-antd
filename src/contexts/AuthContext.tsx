@@ -36,7 +36,8 @@ const AuthContextProvider: React.FC<ChildrenProp> = ({ children }) => {
   useEffect(() => {
     const getCurrentUserFormLocalStorage = () => {
       const storedUser = LocalStorage().getCurrentUser()
-      if (storedUser) {
+      console.log('getCurrentUser: ', storedUser)
+      if (storedUser.length === 1) {
         setCurrentUser(storedUser);
         isAuthHandler(true);
       } else {

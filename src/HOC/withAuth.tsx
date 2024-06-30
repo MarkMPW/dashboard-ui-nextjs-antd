@@ -13,7 +13,6 @@ const withAuth = (WrappedComponent: React.FC) => {
 
     useEffect(() => {
       if (!currentUser) {
-        console.log('current user: ', currentUser)
         route.push("/login");
         localStorage.removeItem('currentUser')
       } else {
