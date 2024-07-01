@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 
 import { Table, TableProps, Button, Space, Popconfirm } from 'antd'
 import Image from 'next/image'
+import { delayTimeout } from '@/utils/dalay'
 
 interface PostTableType {
   id: number
@@ -27,17 +28,18 @@ const PostTable: React.FC<PostTableProps> = ({ dataSource}) => {
     route.push(`/admin/posts/${id}`)
   }
 
-  const handleConfirmPopup = (postId: number) => {
+  const handleConfirmPopup = async (postId: number) => {
     setConfirmLoading(true)
 
     if(dataSource) {
       const updateDataSource = dataSource.filter((data: PostTableType) => data.id !== postId)
 
-      setTimeout(() => {
-        localStorage.setItem('posts', JSON.stringify(updateDataSource))
+      await delayTimeout(1000)
+
+      localStorage.setItem('posts', JSON.stringify(updateDataSource))
         setConfirmLoading(false)
         window.location.reload()
-      }, 1000)
+
     }
   }
 

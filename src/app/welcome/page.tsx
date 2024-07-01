@@ -9,6 +9,7 @@ import { NextPage } from "next";
 import withAuth from "@/HOC/withAuth";
 
 import { LocalStorage } from "@/utils/getData";
+import { delayTimeout } from "@/utils/dalay";
 
 export interface AllPostsType {
   id: number;
@@ -18,39 +19,34 @@ export interface AllPostsType {
 }
 
 const WelcomePage: NextPage = () => {
-
   const { currentUser, setCurrentUser } = useContext(AuthContext);
   const [allPosts, setAllPosts] = useState<AllPostsType[]>([]);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   useEffect(() => {
     try {
-      const getLocalStoragePosts = LocalStorage().getPost()
+      const getLocalStoragePosts = LocalStorage().getPost();
 
-      setAllPosts(getLocalStoragePosts)
+      setAllPosts(getLocalStoragePosts);
 
-      const storedUser = LocalStorage().getCurrentUser()
+      const storedUser = LocalStorage().getCurrentUser();
 
-      setCurrentUser(storedUser)
-
+      setCurrentUser(storedUser);
     } catch (error: unknown) {
       console.log("failed to get currentUser: ", error);
     }
   }, []);
 
-  const handleDeletePost = (id: number) => {
+  const handleDeletePost = async (id: number) => {
     setConfirmLoading(true);
 
-    setTimeout(() => {
-      const deletePost = allPosts.filter(
-        (post: AllPostsType) => post.id !== id
-      );
+    await delayTimeout(700);
 
-      localStorage.setItem("posts", JSON.stringify(deletePost));
-      setAllPosts(deletePost);
-      setConfirmLoading(false);
-    }, 700);
+    const deletePost = allPosts.filter((post: AllPostsType) => post.id !== id);
 
+    localStorage.setItem("posts", JSON.stringify(deletePost));
+    setAllPosts(deletePost);
+    setConfirmLoading(false);
   };
 
   return (
@@ -94,13 +90,11 @@ const WelcomePage: NextPage = () => {
                   Edit
                 </Link>
                 <Popconfirm
-                  title="Do you want to delete"     
+                  title="Do you want to delete"
                   okButtonProps={{ loading: confirmLoading }}
                   onConfirm={() => handleDeletePost(post?.id)}
                 >
-                  <Button
-                    className="bg-red-500 py-5 px-3 rounded-md text-lg my-2"
-                  >
+                  <Button className="bg-red-500 py-5 px-3 rounded-md text-lg my-2">
                     Delete
                   </Button>
                 </Popconfirm>

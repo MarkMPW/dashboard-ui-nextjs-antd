@@ -14,6 +14,7 @@ import { NextPage } from "next";
 
 import { LocalStorage } from "@/utils/getData";
 import CustomInput from "@/components/CustomInput";
+import { delayTimeout } from "@/utils/dalay";
 
 interface PageProp {
   params: {
@@ -69,7 +70,7 @@ const EditUserPage: NextPage<PageProp> = ({ params }) => {
     setOpenPopup(false);
   };
 
-  const handleConfirmPopup = () => {
+  const handleConfirmPopup = async () => {
     setConfirmLoading(true);
 
     if (Object.keys(formik.errors).length !== 0) {
@@ -77,16 +78,17 @@ const EditUserPage: NextPage<PageProp> = ({ params }) => {
       setOpenPopup(false);
       message.error("Failed to edit", 2);
     } else {
-      setTimeout(() => {
-        setOpenPopup(false);
-        setConfirmLoading(false);
+      
+      await delayTimeout(500)
+      setOpenPopup(false);
+      setConfirmLoading(false);
 
-        message.success("Edit success", 2);
+      message.success("Edit success", 2);
 
-        formik.submitForm().then(() => {
-          route.push("/admin/users");
-        });
-      }, 500);
+      formik.submitForm().then(() => {
+        route.push("/admin/users");
+      });
+      
     }
   };
 

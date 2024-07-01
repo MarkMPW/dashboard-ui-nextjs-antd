@@ -14,6 +14,7 @@ import { NextPage } from "next";
 
 import { LocalStorage } from "@/utils/getData";
 import CustomInput from "@/components/CustomInput";
+import { delayTimeout } from "@/utils/dalay";
 
 interface PageProp {
   params: {
@@ -32,10 +33,10 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
   const [openPopup, setOpenPopup] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [postValueFromLocal, setPostValueFromLocal] = useState({
-    title: '',
-    imageUrl: '',
-    description: '',
-  })
+    title: "",
+    imageUrl: "",
+    description: "",
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -61,7 +62,7 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
         imageUrl: findEditPost?.imageUrl,
         description: findEditPost?.description,
       });
-      setPostValueFromLocal(findEditPost)
+      setPostValueFromLocal(findEditPost);
     }
   }, []);
 
@@ -73,7 +74,7 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
     setOpenPopup(false);
   };
 
-  const handleConfirmPopup = () => {
+  const handleConfirmPopup = async () => {
     formik.submitForm();
     setConfirmLoading(true);
 
@@ -82,14 +83,15 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
       setOpenPopup(false);
       message.error("Failed to edit", 2);
     } else {
-      setTimeout(() => {
-        setOpenPopup(false);
-        setConfirmLoading(false);
-        message.success("Edit success", 2);
-        formik.submitForm().then(() => {
-          route.push("/admin/posts");
-        });
-      }, 500);
+
+      await delayTimeout(500);
+
+      setOpenPopup(false);
+      setConfirmLoading(false);
+      message.success("Edit success", 2);
+      formik.submitForm().then(() => {
+        route.push("/admin/posts");
+      });
     }
   };
 
@@ -139,7 +141,7 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
             topic="Title"
             editWidth
           />
-          <CustomInput 
+          <CustomInput
             placeholder="imageUrl"
             type="text"
             field={formik.getFieldProps("imageUrl")}
@@ -153,15 +155,15 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
             topic="Image URL"
             editWidth
           />
-          <CustomInput 
+          <CustomInput
             placeholder="Description"
-            field={formik.getFieldProps('description')}
+            field={formik.getFieldProps("description")}
             form={formik}
             meta={{
               value: formik.values.description,
               touched: formik.touched.description as boolean,
               error: formik.errors.description,
-              initialTouched: formik.initialTouched as boolean
+              initialTouched: formik.initialTouched as boolean,
             }}
             topic="Description"
             editWidth

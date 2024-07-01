@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Space, Table, TableProps, Button, Popconfirm } from "antd";
+import { delayTimeout } from "@/utils/dalay";
 
 export interface TableType {
   id: number;
@@ -24,19 +25,20 @@ const UserTable: React.FC<TablePropsType> = ({ dataSource }) => {
     route.push(`/admin/users/${id}`);
   };
 
-  const handleOkPopupConfirm = (userId: number) => {
+  const handleOkPopupConfirm = async (userId: number) => {
     setConfirmLoading(true);
 
     const updateDataSource = dataSource.filter(
       (data: TableType) => data.id !== userId
     );
 
-    setTimeout(() => {
-      localStorage.setItem("userData", JSON.stringify(updateDataSource));
+    await delayTimeout(500)
 
-      setConfirmLoading(false);
-      window.location.reload();
-    }, 500);
+    localStorage.setItem("userData", JSON.stringify(updateDataSource));
+
+    setConfirmLoading(false);
+    window.location.reload();
+
   };
 
   const columns: TableProps<TableType>["columns"] = [

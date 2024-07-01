@@ -11,6 +11,7 @@ import * as Yup from "yup";
 import { NextPage } from "next";
 import CustomInput from "@/components/CustomInput";
 import { LocalStorage } from "@/utils/getData";
+import { delayTimeout } from "@/utils/dalay";
 
 interface PageProp {
   params: {
@@ -43,7 +44,7 @@ const EditPage: NextPage<PageProp> = ({ params }) => {
   });
 
   useEffect(() => {
-    const posts = LocalStorage().getPost()
+    const posts = LocalStorage().getPost();
     const editPost = posts.find(
       (post: AllPostsType) => post.id === Number(params.id)
     );
@@ -65,7 +66,7 @@ const EditPage: NextPage<PageProp> = ({ params }) => {
     setOpenPopup(false);
   };
 
-  const handleOkPopupConfirm = () => {
+  const handleOkPopupConfirm = async () => {
     setConfirmLoading(true);
 
     messageApi.open({
@@ -73,17 +74,17 @@ const EditPage: NextPage<PageProp> = ({ params }) => {
       content: "Edit successfully ",
     });
 
-    setTimeout(() => {
-      setOpenPopup(false);
-      setConfirmLoading(false);
-      formik.submitForm().then(() => {
-        route.push("/welcome");
-      });
-    }, 1000);
+    await delayTimeout(1000);
+
+    setOpenPopup(false);
+    setConfirmLoading(false);
+    formik.submitForm().then(() => {
+      route.push("/welcome");
+    });
   };
 
   const updatedPost = (values: any) => {
-    const posts = LocalStorage().getPost()
+    const posts = LocalStorage().getPost();
 
     const updatePost = posts.map((p: AllPostsType) =>
       p.id === Number(params.id)
