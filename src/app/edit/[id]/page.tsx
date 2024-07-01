@@ -10,6 +10,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { NextPage } from "next";
 import CustomInput from "@/components/CustomInput";
+import { LocalStorage } from "@/utils/getData";
 
 interface PageProp {
   params: {
@@ -42,9 +43,7 @@ const EditPage: NextPage<PageProp> = ({ params }) => {
   });
 
   useEffect(() => {
-    const getEditPost = localStorage.getItem("posts");
-    const posts = getEditPost ? JSON.parse(getEditPost) : [];
-
+    const posts = LocalStorage().getPost()
     const editPost = posts.find(
       (post: AllPostsType) => post.id === Number(params.id)
     );
@@ -84,8 +83,7 @@ const EditPage: NextPage<PageProp> = ({ params }) => {
   };
 
   const updatedPost = (values: any) => {
-    const getAllPosts = localStorage.getItem("posts");
-    const posts = getAllPosts ? JSON.parse(getAllPosts) : [];
+    const posts = LocalStorage().getPost()
 
     const updatePost = posts.map((p: AllPostsType) =>
       p.id === Number(params.id)

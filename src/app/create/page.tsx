@@ -11,6 +11,7 @@ import { NextPage } from "next";
 
 import { delayTimeout } from "@/utils/dalay";
 import CustomInput from "@/components/CustomInput";
+import { LocalStorage } from "@/utils/getData";
 
 const yupValidationSchema = Yup.object({
   title: Yup.string().max(15, "Reached the maximum 15").required("Required"),
@@ -37,8 +38,6 @@ const CreatePost: NextPage = () => {
   const handleCreatePost = async (values: any) => {
     setLoading(true);
 
-    const storedPosts = localStorage.getItem("posts");
-
     await delayTimeout(500);
 
     const newPost = {
@@ -48,7 +47,7 @@ const CreatePost: NextPage = () => {
       description: values.description,
     };
 
-    const posts = storedPosts ? JSON.parse(storedPosts) : [];
+    const posts = LocalStorage().getPost()
 
     setLoading(false);
 

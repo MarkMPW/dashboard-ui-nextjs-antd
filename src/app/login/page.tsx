@@ -17,6 +17,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { UserRole } from "@/enums/role-enum";
 import { delayTimeout } from "@/utils/dalay";
 import CustomInput from "@/components/CustomInput";
+import { LocalStorage } from "@/utils/getData";
 
 const LoginPage: NextPage = () => {
   const router = useRouter();
@@ -51,8 +52,7 @@ const LoginPage: NextPage = () => {
     setIsLoading(true);
   
     try {
-      const userLocalData = localStorage.getItem("userData");
-      const users = userLocalData ? JSON.parse(userLocalData) : [];
+      const users = LocalStorage().getUsers()
   
       const allUser = [...InitialUserData, ...users];
   
