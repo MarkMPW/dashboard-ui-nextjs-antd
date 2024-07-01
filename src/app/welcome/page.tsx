@@ -21,7 +21,6 @@ const WelcomePage: NextPage = () => {
 
   const { currentUser, setCurrentUser } = useContext(AuthContext);
   const [allPosts, setAllPosts] = useState<AllPostsType[]>([]);
-  const [openPopup, setOpenPopup] = useState<number | null>(null);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   useEffect(() => {
@@ -39,14 +38,6 @@ const WelcomePage: NextPage = () => {
     }
   }, []);
 
-  const handleShowPopup = (id: number) => {
-    setOpenPopup(id);
-  };
-
-  const handleCancelPopup = () => {
-    setOpenPopup(null);
-  };
-
   const handleDeletePost = (id: number) => {
     setConfirmLoading(true);
 
@@ -57,9 +48,8 @@ const WelcomePage: NextPage = () => {
 
       localStorage.setItem("posts", JSON.stringify(deletePost));
       setAllPosts(deletePost);
-      setOpenPopup(null);
       setConfirmLoading(false);
-    }, 500);
+    }, 700);
 
   };
 
@@ -104,15 +94,12 @@ const WelcomePage: NextPage = () => {
                   Edit
                 </Link>
                 <Popconfirm
-                  title="Do you want to delete"
-                  open={openPopup === post?.id}
-                  onCancel={handleCancelPopup}
+                  title="Do you want to delete"     
                   okButtonProps={{ loading: confirmLoading }}
                   onConfirm={() => handleDeletePost(post?.id)}
                 >
                   <Button
                     className="bg-red-500 py-5 px-3 rounded-md text-lg my-2"
-                    onClick={() => handleShowPopup(post?.id)}
                   >
                     Delete
                   </Button>

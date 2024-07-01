@@ -1,9 +1,15 @@
 "use client";
 
-import React, { useContext, createContext, useState, useEffect, useMemo } from "react";
+import React, {
+  useContext,
+  createContext,
+  useState,
+  useEffect,
+  useMemo,
+} from "react";
 import { UserType } from "../interfaces/user-interface";
 import { LocalStorage } from "@/utils/getData";
-  
+
 interface ThemeContextType {
   currentUser?: UserType;
   isAuth: boolean;
@@ -35,13 +41,13 @@ const AuthContextProvider: React.FC<ChildrenProp> = ({ children }) => {
 
   useEffect(() => {
     const getCurrentUserFormLocalStorage = () => {
-      const storedUser = LocalStorage().getCurrentUser()
-      console.log('getCurrentUser: ', storedUser)
-      if (storedUser.length === 1) {
+      const storedUser = LocalStorage().getCurrentUser();
+
+      if (storedUser.length === 0) {
+        isAuthHandler(false);
+      } else {
         setCurrentUser(storedUser);
         isAuthHandler(true);
-      } else {
-        isAuthHandler(false);
       }
     };
     getCurrentUserFormLocalStorage();
@@ -51,20 +57,19 @@ const AuthContextProvider: React.FC<ChildrenProp> = ({ children }) => {
       setCurrentUser(undefined);
     };
   }, []);
-
-  const contextValue = useMemo(() => ({
-    isAuth,
-    currentUser,
-    setCurrentUser,
-    isAuthHandler,
-  }), [isAuth, currentUser])
+  
+  const contextValue = useMemo(
+    () => ({
+      isAuth,
+      currentUser,
+      setCurrentUser,
+      isAuthHandler,
+    }),
+    [isAuth, currentUser]
+  );
 
   return (
-    <AuthContext.Provider
-      value={contextValue}
-    >
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
 

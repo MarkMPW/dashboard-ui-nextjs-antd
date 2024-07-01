@@ -9,22 +9,25 @@ const withAuth = (WrappedComponent: React.FC) => {
   const Wrapper = (props: any) => {
     const route = useRouter();
     const { currentUser } = useContext(AuthContext);
+
     const [isLoading, setIsLoading] = useState(true)
+    const isUser = currentUser?.role === 'user'
 
     useEffect(() => {
-      if (!currentUser) {
-        route.push("/login");
-        localStorage.removeItem('currentUser')
+      if(!isUser) {
+        route.push('/login')
+        setIsLoading(false)
       } else {
-        return (() => setIsLoading(false))
+        route.push('/welcome')
+        setIsLoading(false)
       }
-    }, []);
+    }, [isUser])
 
     if(isLoading) {
       return <Spin/>
     }
 
-    return <WrappedComponent {...props} />;
+    return isUser ? <WrappedComponent {...props} /> : null
   };
   return Wrapper
 };
