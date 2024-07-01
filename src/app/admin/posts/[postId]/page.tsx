@@ -2,17 +2,18 @@
 
 import React, { useEffect, useState } from "react";
 
-import { Button, Input, Popconfirm, message } from "antd";
+import { Button, Popconfirm, message } from "antd";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { useFormik } from "formik";
+import { setIn, useFormik } from "formik";
 import * as Yup from "yup";
 import { AllPostsType } from "@/app/welcome/page";
 import { NextPage } from "next";
 
 import { LocalStorage } from "@/utils/getData";
+import CustomInput from "@/components/CustomInput";
 
 interface PageProp {
   params: {
@@ -30,12 +31,17 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
   const route = useRouter();
   const [openPopup, setOpenPopup] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [postValueFromLocal, setPostValueFromLocal] = useState({
+    title: '',
+    imageUrl: '',
+    description: '',
+  })
 
   const formik = useFormik({
     initialValues: {
-      title: "",
-      imageUrl: "",
-      description: "",
+      title: postValueFromLocal?.title,
+      imageUrl: postValueFromLocal?.imageUrl,
+      description: postValueFromLocal?.description,
     },
     validationSchema: yupValidationSchema,
     onSubmit: (values) => {
@@ -55,6 +61,7 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
         imageUrl: findEditPost?.imageUrl,
         description: findEditPost?.description,
       });
+      setPostValueFromLocal(findEditPost)
     }
   }, []);
 
@@ -118,50 +125,48 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
         <h3 className="text-2xl font-semibold">Edit Post</h3>
 
         <form onSubmit={formik.handleSubmit}>
-          <div className="mt-3">
-            <label htmlFor="title" className="text-xl">Title:</label>
-            <Input
-              type="text"
-              className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
-              placeholder="title"
-              name="title"
-              value={formik.values.title}
-              onChange={formik.handleChange}
-              status={formik.errors.title && formik.touched ? "error" : ""}
-            />
-            {formik.errors.title && formik.touched && (
-              <p className="text-red-400">{formik.errors.title}</p>
-            )}
-          </div>
-          <div className="mt-3">
-            <label htmlFor="imageUrl" className="text-xl">Image URL:</label>
-            <Input
-              type="text"
-              className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
-              placeholder="image URL"
-              name="imageUrl"
-              value={formik.values.imageUrl}
-              onChange={formik.handleChange}
-              status={formik.errors.imageUrl && formik.touched ? "error" : ""}
-            />
-            {formik.errors.imageUrl && formik.touched && (
-              <p className="text-red-400">{formik.errors.imageUrl}</p>
-            )}
-          </div>
-          <div className="mt-3">
-            <label htmlFor="description" className="text-xl">Description:</label>
-            <textarea
-              className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
-              placeholder="Description"
-              name="description"
-              value={formik.values.description}
-              onChange={formik.handleChange}
-              required
-            />
-            {formik.errors.description && formik.touched && (
-              <p className="text-red-400">{formik.errors.description}</p>
-            )}
-          </div>
+          <CustomInput
+            placeholder="title"
+            type="text"
+            field={formik.getFieldProps("title")}
+            form={formik}
+            meta={{
+              value: formik.values.title,
+              touched: formik.touched.title as boolean,
+              error: formik.errors.title,
+              initialTouched: formik.initialTouched as boolean,
+            }}
+            topic="Title"
+            editWidth
+          />
+          <CustomInput 
+            placeholder="imageUrl"
+            type="text"
+            field={formik.getFieldProps("imageUrl")}
+            form={formik}
+            meta={{
+              value: formik.values.imageUrl,
+              touched: formik.touched.imageUrl as boolean,
+              error: formik.errors.imageUrl,
+              initialTouched: formik.initialTouched as boolean,
+            }}
+            topic="Image URL"
+            editWidth
+          />
+          <CustomInput 
+            placeholder="Description"
+            field={formik.getFieldProps('description')}
+            form={formik}
+            meta={{
+              value: formik.values.description,
+              touched: formik.touched.description as boolean,
+              error: formik.errors.description,
+              initialTouched: formik.initialTouched as boolean
+            }}
+            topic="Description"
+            editWidth
+            textArea
+          />
 
           <Popconfirm
             title="You want to edit this post?"

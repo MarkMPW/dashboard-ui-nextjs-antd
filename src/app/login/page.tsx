@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-import { Input, Button, message } from "antd";
+import { Button, message } from "antd";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -16,6 +16,7 @@ import InitialUserData from "../../../users.json";
 import { useAuth } from "@/contexts/AuthContext";
 import { UserRole } from "@/enums/role-enum";
 import { delayTimeout } from "@/utils/dalay";
+import CustomInput from "@/components/CustomInput";
 
 const LoginPage: NextPage = () => {
   const router = useRouter();
@@ -94,30 +95,30 @@ const LoginPage: NextPage = () => {
           <hr className="my-3" />
 
           <form onSubmit={formik.handleSubmit}>
-            <Input
-              type="text"
-              className="w-full bg-gray-200 border py-2 px-3 rounded text-lg my-2"
-              placeholder="Enter your Email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              status={formik.errors.email ? "error" : ""}
-              name="email"
+            <CustomInput 
+              type='text'
+              placeholder="Enter your email"
+              field={formik.getFieldProps('email')}
+              form={formik}
+              meta={{
+                touched: formik.touched.email as boolean,
+                error: formik.errors.email,
+                value: formik.values.email,
+                initialTouched: formik.initialTouched as boolean,
+              }}   
             />
-            {formik.errors.email && formik.touched.email ? (
-              <p className="text-red-500">{formik.errors.email}</p>
-            ) : null}
-            <Input
-              type="password"
-              className="w-full bg-gray-200 border py-2 px-3 rounded text-lg my-2"
-              placeholder="Enter your Password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              status={formik.errors.password ? "error" : ""}
-              name="password"
+            <CustomInput 
+              type='password'
+              placeholder="Enter your password"
+              field={formik.getFieldProps('password')}
+              form={formik}
+              meta={{
+                touched: formik.touched.password as boolean,
+                error: formik.errors.password,
+                value: formik.values.password,
+                initialTouched: formik.initialTouched as boolean,
+              }}
             />
-            {formik.errors.password && formik.touched.password ? (
-              <p className="text-red-500">{formik.errors.password}</p>
-            ) : null}
             <Button
               type="primary"
               size="large"

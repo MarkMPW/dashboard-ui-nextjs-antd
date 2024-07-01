@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 
-import { Button, Input, Popconfirm, message } from "antd";
+import { Button, Popconfirm, message } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -13,6 +13,7 @@ import { UserType } from "@/app/register/page";
 import { NextPage } from "next";
 
 import { LocalStorage } from "@/utils/getData";
+import CustomInput from "@/components/CustomInput";
 
 interface PageProp {
   params: {
@@ -123,51 +124,48 @@ const EditUserPage: NextPage<PageProp> = ({ params }) => {
         <h3 className="text-2xl font-semibold">Edit User</h3>
 
         <form onSubmit={formik.handleSubmit}>
-          <div className="mt-3">
-            <label htmlFor="userName" className="text-xl">Username:</label>
-            <Input
-              type="text"
-              className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
-              placeholder="username"
-              name="userName"
-              value={formik.values.userName}
-              onChange={formik.handleChange}
-              status={formik.errors.userName && formik.touched ? "error" : ""}
-            />
-            {formik.errors.userName && formik.touched && (
-              <p className="text-red-400">{formik.errors.userName}</p>
-            )}
-          </div>
-          <div className="mt-3">
-            <label htmlFor='email' className="text-xl">Email:</label>
-            <Input
-              type="text"
-              className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
-              placeholder="Email"
-              name="email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              status={formik.errors.email && formik.touched ? "error" : ""}
-            />
-            {formik.errors.email && formik.touched && (
-              <p className="text-red-400">{formik.errors.email}</p>
-            )}
-          </div>
-          <div className="mt-3">
-            <label htmlFor="password" className="text-xl">Password:</label>
-            <Input
-              type="text"
-              className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
-              placeholder="Password"
-              name="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              status={formik.errors.password && formik.touched ? "error" : ""}
-            />
-            {formik.errors.password && formik.touched && (
-              <p className="text-red-400">{formik.errors.password}</p>
-            )}
-          </div>
+          <CustomInput 
+            form={formik}
+            field={formik.getFieldProps('userName')}
+            type='text'
+            topic='Username'
+            placeholder="Enter username"
+            editWidth
+            meta={{
+              value: formik.values.userName,
+              error: formik.errors.userName,
+              touched: formik.touched.userName as boolean,
+              initialTouched: formik.initialTouched as boolean,
+            }}
+          />
+          <CustomInput 
+            form={formik}
+            field={formik.getFieldProps('email')}
+            type='text'
+            topic="Email"
+            placeholder="Enter email"
+            editWidth
+            meta={{
+              value: formik.values.email,
+              error: formik.errors.email,
+              touched: formik.touched.email as boolean,
+              initialTouched: formik.initialTouched as boolean,
+            }}
+          />
+          <CustomInput 
+             form={formik}
+             field={formik.getFieldProps('password')}
+             type='text'
+             topic="Password"
+             placeholder="Enter password"
+             editWidth
+             meta={{
+               value: formik.values.password,
+               error: formik.errors.password,
+               touched: formik.touched.password as boolean,
+               initialTouched: formik.initialTouched as boolean,
+             }}
+          />
 
           <Popconfirm
             title="You want to edit this post?"
@@ -179,8 +177,6 @@ const EditUserPage: NextPage<PageProp> = ({ params }) => {
             <Button
               type="primary"
               className="py-2 px-3 rounded-md text-lg my-2"
-              // htmlType="submit"
-              // loading={loading}
               onClick={handleShowPopup}
             >
               Edit user

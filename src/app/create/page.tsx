@@ -2,25 +2,23 @@
 
 import Link from "next/link";
 import React, { useState } from "react";
-import { Input, Button, message } from "antd";
+import { Button, message } from "antd";
 import { useRouter } from "next/navigation";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { NextPage } from "next";
 
-import { delayTimeout } from '@/utils/dalay'
+import { delayTimeout } from "@/utils/dalay";
+import CustomInput from "@/components/CustomInput";
 
 const yupValidationSchema = Yup.object({
-  title: Yup.string()
-    .max(15, "Reached the maximum 15")
-    .required("Required"),
+  title: Yup.string().max(15, "Reached the maximum 15").required("Required"),
   imageUrl: Yup.string().required("Required"),
   description: Yup.string().required("Required"),
-})
+});
 
 const CreatePost: NextPage = () => {
-
   const route = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -32,7 +30,7 @@ const CreatePost: NextPage = () => {
     },
     validationSchema: yupValidationSchema,
     onSubmit: async (values) => {
-      handleCreatePost(values)
+      handleCreatePost(values);
     },
   });
 
@@ -41,7 +39,7 @@ const CreatePost: NextPage = () => {
 
     const storedPosts = localStorage.getItem("posts");
 
-    await delayTimeout(500)
+    await delayTimeout(500);
 
     const newPost = {
       id: Date.now(),
@@ -61,7 +59,7 @@ const CreatePost: NextPage = () => {
     localStorage.setItem("posts", JSON.stringify(posts));
 
     route.push("/welcome");
-  }
+  };
 
   return (
     <section className="flex-grow">
@@ -76,42 +74,47 @@ const CreatePost: NextPage = () => {
         <h3 className="text-xl">Create Post</h3>
 
         <form onSubmit={formik.handleSubmit}>
-          <Input
+          <CustomInput
+            field={formik.getFieldProps("title")}
+            form={formik}
             type="text"
-            className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
             placeholder="Post title"
-            name="title"
-            value={formik.values.title}
-            onChange={formik.handleChange}
-            status={formik.errors.title ? "error" : ""}
+            meta={{
+              value: formik.values.title,
+              error: formik.errors.title,
+              touched: formik.touched.title as boolean,
+              initialTouched: formik.initialTouched as boolean,
+            }}
+            editWidth
           />
-          {formik.errors.title && formik.touched ? (
-            <p className="text-red-400">{formik.errors.title}</p>
-          ) : null}
-          <Input
+          <CustomInput
+            field={formik.getFieldProps("imageUrl")}
+            form={formik}
             type="text"
-            className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
-            placeholder="Post Img url"
-            name="imageUrl"
-            value={formik.values.imageUrl}
-            onChange={formik.handleChange}
-            status={formik.errors.imageUrl ? "error" : ""}
+            placeholder="Post imageUrl"
+            meta={{
+              value: formik.values.imageUrl,
+              error: formik.errors.imageUrl,
+              touched: formik.touched.imageUrl as boolean,
+              initialTouched: formik.initialTouched as boolean,
+            }}
+            editWidth
           />
-          {formik.errors.imageUrl && formik.touched ? (
-            <p className="text-red-400">{formik.errors.imageUrl}</p>
-          ) : null}
-          <textarea
+          <CustomInput 
+            field={formik.getFieldProps('description')}
+            form={formik}
+            placeholder="Enter your post content"
+            meta={{
+              value: formik.values.description,
+              error: formik.errors.description,
+              touched: formik.touched.description as boolean,
+              initialTouched: formik.initialTouched as boolean,
+            }}
+            editWidth
             cols={30}
             rows={10}
-            placeholder="Enter your post content"
-            className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
-            name="description"
-            value={formik.values.description}
-            onChange={formik.handleChange}
-          ></textarea>
-          {formik.errors.description && formik.touched ? (
-            <p className="text-red-400">{formik.errors.description}</p>
-          ) : null}
+            textArea
+          />
           <Button
             type="primary"
             className="py-2 px-3 rounded-md text-lg my-2"

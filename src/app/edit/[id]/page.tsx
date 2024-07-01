@@ -1,7 +1,7 @@
 "use client";
 
 import { AllPostsType } from "@/app/welcome/page";
-import { Button, Input, Popconfirm, message } from "antd";
+import { Button, Popconfirm, message } from "antd";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { NextPage } from "next";
+import CustomInput from "@/components/CustomInput";
 
 interface PageProp {
   params: {
@@ -30,9 +31,9 @@ const EditPage: NextPage<PageProp> = ({ params }) => {
 
   const formik = useFormik({
     initialValues: {
-      title: '',
-      imageUrl: '',
-      description: '',
+      title: "",
+      imageUrl: "",
+      description: "",
     },
     validationSchema: yupValidationSchema,
     onSubmit: (values) => {
@@ -115,31 +116,47 @@ const EditPage: NextPage<PageProp> = ({ params }) => {
           <h3 className="text-xl">Edit Post</h3>
 
           <form onSubmit={formik.handleSubmit}>
-            <Input
+            <CustomInput
+              field={formik.getFieldProps("title")}
+              form={formik}
               type="text"
-              className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
               placeholder="Post title"
-              name="title"
-              value={formik.values.title}
-              onChange={formik.handleChange}
+              meta={{
+                value: formik.values.title,
+                error: formik.errors.title,
+                touched: formik.touched.title as boolean,
+                initialTouched: formik.initialTouched as boolean,
+              }}
+              editWidth
             />
-            <Input
+            <CustomInput
+              field={formik.getFieldProps("imageUrl")}
+              form={formik}
               type="text"
-              className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
-              placeholder="Post Img url"
-              name="imageUrl"
-              value={formik.values.imageUrl}
-              onChange={formik.handleChange}
+              placeholder="Post imageUrl"
+              meta={{
+                value: formik.values.imageUrl,
+                error: formik.errors.imageUrl,
+                touched: formik.touched.imageUrl as boolean,
+                initialTouched: formik.initialTouched as boolean,
+              }}
+              editWidth
             />
-            <textarea
+            <CustomInput
+              field={formik.getFieldProps("description")}
+              form={formik}
+              placeholder="Enter your post content"
+              meta={{
+                value: formik.values.description,
+                error: formik.errors.description,
+                touched: formik.touched.description as boolean,
+                initialTouched: formik.initialTouched as boolean,
+              }}
+              editWidth
               cols={30}
               rows={10}
-              placeholder="Enter your post content"
-              className="w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2"
-              name="description"
-              value={formik.values.description}
-              onChange={formik.handleChange}
-            ></textarea>
+              textArea
+            />
             <Popconfirm
               title="You want to edit this post?"
               open={openPopup}
@@ -150,8 +167,6 @@ const EditPage: NextPage<PageProp> = ({ params }) => {
               <Button
                 type="primary"
                 className="py-2 px-3 rounded-md text-lg my-2"
-                // htmlType="submit"
-                // loading={loading}
                 onClick={handleShowPopup}
               >
                 Edit post
