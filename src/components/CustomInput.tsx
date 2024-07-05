@@ -13,6 +13,8 @@ interface CustomInputType extends FieldProps {
   cols?: number
 }
 
+const { TextArea } = Input
+
 const CustomInput: React.FC<CustomInputType> = ({
   field,
   type,
@@ -33,15 +35,16 @@ const CustomInput: React.FC<CustomInputType> = ({
         </label>
       ) : null}
       {textArea ? (
-        <textarea
+        <TextArea
           {...field}
           className='w-[300px] block bg-gray-200 border py-2 px-3 text-lg my-2'
           placeholder={placeholder}
           value={meta.value}
           required
           onChange={form.handleChange}
-          cols={cols}
-          rows={rows}
+          maxLength={100}
+          showCount
+          autoSize={{ minRows: rows, maxRows: cols }}
         />
       ): (
         <Input
