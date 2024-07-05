@@ -11,7 +11,6 @@ const withAuthTest = <P extends object>(WrappedComponent: ComponentType<P>) => {
 
     useEffect(() => {
       if(!isAdmin) {
-        console.log('navigate user to login page')
         router.push('/')
       } else {
         router.push('/admin')

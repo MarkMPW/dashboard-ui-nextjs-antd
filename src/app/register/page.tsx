@@ -76,7 +76,6 @@ const RegisterPage: NextPage = () => {
       }}
       validationSchema={yupValidationSchema}
       onSubmit={(values) => {
-        console.log(values)
         handleRegister(values);
       }}
     >
