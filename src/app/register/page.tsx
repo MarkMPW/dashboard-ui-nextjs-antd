@@ -13,6 +13,7 @@ import { NextPage } from "next";
 import CustomInput from "@/components/CustomInput";
 import { LocalStorage } from "@/utils/getData";
 import { UserType } from "@/interfaces/user-interface";
+import { UserRole } from "@/enum/userRole.enum";
 
 const yupValidationSchema = Yup.object({
   userName: Yup.string().max(10, "Reached the maximum 10").required("Required"),
@@ -55,7 +56,7 @@ const RegisterPage: NextPage = () => {
 
       localStorage.setItem("userData", JSON.stringify(users));
 
-      if (values.role === "user") {
+      if (values.role === UserRole.user) {
         router.push("/login");
       } else router.push("/admin");
     } catch (error: unknown) {
@@ -71,7 +72,7 @@ const RegisterPage: NextPage = () => {
         email: "",
         password: "",
         confirmPassword: "",
-        role: "user",
+        role: UserRole.user,
       }}
       validationSchema={yupValidationSchema}
       onSubmit={(values) => {
