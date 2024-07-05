@@ -20,11 +20,11 @@ const AdminPage: NextPage = () => {
   const [totalPosts, setTotalPosts] = useState<number>(0);
 
   useEffect(() => {
-    const getPosts = LocalStorage().getPost()
-    const getUsers = LocalStorage().getUsers()
+    const localStoragePost = LocalStorage().getPost()
+    const localStorageUser = LocalStorage().getUsers()
 
-    const posts = getPosts.length > 0 ? getPosts.length : 0;
-    const users = getUsers.length > 0 ? getUsers.length : 0;
+    const posts = localStoragePost.length > 0 ? localStoragePost.length : 0;
+    const users = localStorageUser.length > 0 ? localStorageUser.length : 0;
 
     setTotalPosts(posts);
     setTotalUsers(users);

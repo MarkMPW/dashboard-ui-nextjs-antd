@@ -39,8 +39,8 @@ const ManagePostPage: NextPage = () => {
 
   useEffect(() => {
     const loadPost = () => {
-      const posts = LocalStorage().getPost();
-      setPostData(posts);
+      const localStoragePost = LocalStorage().getPost();
+      setPostData(localStoragePost);
     };
 
     loadPost();

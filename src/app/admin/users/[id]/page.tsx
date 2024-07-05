@@ -47,9 +47,9 @@ const EditUserPage: NextPage<PageProp> = ({ params }) => {
   });
 
   useEffect(() => {
-    const users = LocalStorage().getUsers();
+    const localStorageUser = LocalStorage().getUsers();
 
-    const findUser = users.find(
+    const findUser = localStorageUser.find(
       (user: UserType) => user.id === Number(params.id)
     );
 
@@ -97,9 +97,9 @@ const EditUserPage: NextPage<PageProp> = ({ params }) => {
   };
 
   const handleUpdateUser = (values: UserType) => {
-    const users = LocalStorage().getUsers()
+    const localStorageUser = LocalStorage().getUsers()
 
-    const updateUser = users.map((user: UserType) =>
+    const updateUser = localStorageUser.map((user: UserType) =>
       user.id === Number(params.id)
         ? {
             ...user,

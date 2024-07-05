@@ -100,8 +100,8 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
   };
 
   const handleUpdatePost = (values: AllPostsType) => {
-    const posts = LocalStorage().getPost();
-    const updatedPost = posts.map((post: AllPostsType) =>
+    const localStoragePost = LocalStorage().getPost();
+    const updatedPost = localStoragePost.map((post: AllPostsType) =>
       post.id === Number(params.postId)
         ? {
             ...post,

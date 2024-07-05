@@ -20,13 +20,13 @@ const WelcomePage: NextPage = () => {
 
   useEffect(() => {
     try {
-      const getLocalStoragePosts = LocalStorage().getPost();
+      const localStoragePost = LocalStorage().getPost();
 
-      setAllPosts(getLocalStoragePosts);
+      setAllPosts(localStoragePost);
 
-      const storedUser = LocalStorage().getCurrentUser();
+      const localStorageCurrentUser = LocalStorage().getCurrentUser();
 
-      setCurrentUser(storedUser);
+      setCurrentUser(localStorageCurrentUser);
     } catch (error: unknown) {
       console.log("failed to get currentUser: ", error);
     }

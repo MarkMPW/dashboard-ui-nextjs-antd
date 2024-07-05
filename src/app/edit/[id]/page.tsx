@@ -84,9 +84,9 @@ const EditPage: NextPage<PageProp> = ({ params }) => {
   };
 
   const updatedPost = (values: AllPostsType) => {
-    const posts = LocalStorage().getPost();
+    const localStoragePost = LocalStorage().getPost();
 
-    const updatePost = posts.map((p: AllPostsType) =>
+    const updatePost = localStoragePost.map((p: AllPostsType) =>
       p.id === Number(params.id)
         ? {
             ...p,

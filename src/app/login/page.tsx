@@ -35,7 +35,7 @@ const LoginPage: NextPage = () => {
         .max(20, "Reached the maximum 20")
         .required("Required"),
     }),
-    onSubmit: async (values, { setSubmitting }) => {
+    onSubmit: async (values) => {
       handleLogin(values);
     },
   });
@@ -52,9 +52,9 @@ const LoginPage: NextPage = () => {
     setIsLoading(true);
   
     try {
-      const users = LocalStorage().getUsers()
+      const localStorageUser = LocalStorage().getUsers()
   
-      const allUser = [...InitialUserData, ...users];
+      const allUser = [...InitialUserData, ...localStorageUser];
   
       const findUser = allUser.find(
         (user: UserType) =>
