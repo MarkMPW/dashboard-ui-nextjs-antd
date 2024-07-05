@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, ComponentType } from "react";
 
 import { useRouter } from "next/navigation";
 
 import { AuthContext } from "@/contexts/AuthContext";
 import { Spin } from "antd";
 
-const withAuth = (WrappedComponent: React.FC) => {
-  const Wrapper = (props: any) => {
+const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
+  const Wrapper = (props: P) => {
     const route = useRouter();
     const { currentUser } = useContext(AuthContext);
 

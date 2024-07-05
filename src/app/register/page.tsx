@@ -12,14 +12,7 @@ import { NextPage } from "next";
 
 import CustomInput from "@/components/CustomInput";
 import { LocalStorage } from "@/utils/getData";
-export interface UserType {
-  id: number;
-  userName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  role: string;
-}
+import { UserType } from "@/interfaces/user-interface";
 
 const yupValidationSchema = Yup.object({
   userName: Yup.string().max(10, "Reached the maximum 10").required("Required"),

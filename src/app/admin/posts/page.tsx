@@ -1,6 +1,6 @@
 "use client";
 
-import { AllPostsType } from "@/app/welcome/page";
+import { AllPostsType } from "@/interfaces/user-interface";
 import React, { useEffect, useState } from "react";
 import { NextPage } from "next";
 
@@ -11,13 +11,6 @@ import { useRouter } from "next/navigation";
 import { delayTimeout } from "@/utils/dalay";
 
 import Image from 'next/image'
-
-export interface PostTableType {
-  id: number
-  title: string
-  imageUrl: string
-  description: string
-}
 
 const ManagePostPage: NextPage = () => {
   const [postData, setPostData] = useState<AllPostsType[]>([]);
@@ -33,7 +26,7 @@ const ManagePostPage: NextPage = () => {
     setConfirmLoading(true)
 
     if(postData) {
-      const updateDataSource = postData.filter((data: PostTableType) => data.id !== postId)
+      const updateDataSource = postData.filter((data: AllPostsType) => data.id !== postId)
 
       await delayTimeout(1000)
 
@@ -53,7 +46,7 @@ const ManagePostPage: NextPage = () => {
     loadPost();
   }, []);
 
-  const columns: TableProps<PostTableType>['columns'] = [
+  const columns: TableProps<AllPostsType>['columns'] = [
     {
       title: 'ID',
       dataIndex: 'id',
@@ -82,11 +75,11 @@ const ManagePostPage: NextPage = () => {
       key: 'action',
       render: (_, record) => (
         <Space>
-          <Button type='primary' onClick={()=> handleNaviEdit(record.id)}>Edit</Button>
+          <Button type='primary' onClick={()=> handleNaviEdit(record.id!)}>Edit</Button>
           <Popconfirm
             title='You want to delete this post?'
             okButtonProps={{ loading: confirmLoading }}
-            onConfirm={()=> handleConfirmPopup(record.id)}
+            onConfirm={()=> handleConfirmPopup(record.id!)}
           >
             <Button 
               danger 

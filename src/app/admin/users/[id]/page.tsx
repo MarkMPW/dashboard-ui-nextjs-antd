@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import { UserType } from "@/app/register/page";
+import { UserType } from "@/interfaces/user-interface";
 import { NextPage } from "next";
 
 import { LocalStorage } from "@/utils/getData";
@@ -96,7 +96,7 @@ const EditUserPage: NextPage<PageProp> = ({ params }) => {
     formik.resetForm();
   };
 
-  const handleUpdateUser = (values: any) => {
+  const handleUpdateUser = (values: UserType) => {
     const users = LocalStorage().getUsers()
 
     const updateUser = users.map((user: UserType) =>

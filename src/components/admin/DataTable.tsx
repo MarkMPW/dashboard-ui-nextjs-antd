@@ -7,7 +7,7 @@ interface TablePropsType<T> {
   dataSource: T[]
 }
 
-const DataTable = <T extends { id: React.Key }>({ columns, dataSource }: TablePropsType<T>) => {
+const DataTable = <T extends { id?: React.Key }>({ columns, dataSource }: TablePropsType<T>) => {
   return (
     <Table
       columns={columns}

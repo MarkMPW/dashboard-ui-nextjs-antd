@@ -11,12 +11,7 @@ import withAuth from "@/HOC/withAuth";
 import { LocalStorage } from "@/utils/getData";
 import { delayTimeout } from "@/utils/dalay";
 
-export interface AllPostsType {
-  id: number;
-  title: string;
-  imageUrl: string;
-  description: string;
-}
+import { AllPostsType } from "@/interfaces/user-interface";
 
 const WelcomePage: NextPage = () => {
   const { currentUser, setCurrentUser } = useContext(AuthContext);
@@ -92,7 +87,7 @@ const WelcomePage: NextPage = () => {
                 <Popconfirm
                   title="Do you want to delete"
                   okButtonProps={{ loading: confirmLoading }}
-                  onConfirm={() => handleDeletePost(post?.id)}
+                  onConfirm={() => handleDeletePost(post?.id!)}
                 >
                   <Button className="bg-red-500 py-5 px-3 rounded-md text-lg my-2">
                     Delete

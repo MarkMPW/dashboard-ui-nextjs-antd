@@ -1,6 +1,6 @@
 "use client";
 
-import { AllPostsType } from "@/app/welcome/page";
+import { AllPostsType } from "@/interfaces/user-interface";
 import { Button, Popconfirm, message } from "antd";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -83,7 +83,7 @@ const EditPage: NextPage<PageProp> = ({ params }) => {
     });
   };
 
-  const updatedPost = (values: any) => {
+  const updatedPost = (values: AllPostsType) => {
     const posts = LocalStorage().getPost();
 
     const updatePost = posts.map((p: AllPostsType) =>

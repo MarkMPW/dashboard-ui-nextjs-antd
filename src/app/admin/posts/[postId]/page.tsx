@@ -7,9 +7,9 @@ import { Button, Popconfirm, message } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { setIn, useFormik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
-import { AllPostsType } from "@/app/welcome/page";
+import { AllPostsType } from "@/interfaces/user-interface";
 import { NextPage } from "next";
 
 import { LocalStorage } from "@/utils/getData";
@@ -99,7 +99,7 @@ const PostIdPage: NextPage<PageProp> = ({ params }) => {
     formik.resetForm();
   };
 
-  const handleUpdatePost = (values: any) => {
+  const handleUpdatePost = (values: AllPostsType) => {
     const posts = LocalStorage().getPost();
     const updatedPost = posts.map((post: AllPostsType) =>
       post.id === Number(params.postId)

@@ -9,7 +9,7 @@ import { Button, message } from "antd";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import { UserType } from "../register/page";
+import { UserType } from "@/interfaces/user-interface";
 import { NextPage } from "next";
 
 import InitialUserData from "../../../users.json";
