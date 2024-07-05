@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useContext, useMemo } from "react";
-import TotalCard from "./components/TotalCard";
+import TotalCard from "@/components/admin/TotalCard";
 import { Layout, List } from "antd";
 
 import { SearchOutlined, UserOutlined } from "@ant-design/icons";
@@ -9,6 +9,8 @@ import { NextPage } from "next";
 
 import { AuthContext } from "@/contexts/AuthContext";
 import withAuthTest from "@/HOC/withAdminAuth";
+
+import { LocalStorage } from "@/utils/getData";
 
 const { Content } = Layout;
 
@@ -18,11 +20,11 @@ const AdminPage: NextPage = () => {
   const [totalPosts, setTotalPosts] = useState<number>(0);
 
   useEffect(() => {
-    const getPosts = localStorage.getItem("posts");
-    const getUsers = localStorage.getItem("userData");
+    const localStoragePost = LocalStorage().getPost()
+    const localStorageUser = LocalStorage().getUsers()
 
-    const posts = getPosts ? JSON.parse(getPosts).length : 0;
-    const users = getUsers ? JSON.parse(getUsers).length : 0;
+    const posts = localStoragePost.length > 0 ? localStoragePost.length : 0;
+    const users = localStorageUser.length > 0 ? localStorageUser.length : 0;
 
     setTotalPosts(posts);
     setTotalUsers(users);
@@ -31,15 +33,8 @@ const AdminPage: NextPage = () => {
 
   useEffect(() => {
     try {
-      const storedUser = localStorage.getItem("currentUser");
-
-      console.log("currentUser in admin: ", storedUser);
-
-      if (storedUser) {
-        setCurrentUser(JSON.parse(storedUser));
-      } else {
-        setCurrentUser(undefined);
-      }
+      const getLocalStorageCurrentUser = LocalStorage().getCurrentUser()
+      setCurrentUser(getLocalStorageCurrentUser)
     } catch (error: unknown) {
       console.log("Failed to get currentUser: ", error);
     }

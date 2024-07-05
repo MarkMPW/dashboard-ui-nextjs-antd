@@ -1,73 +1,48 @@
 "use client";
 
 import React from "react";
-import { Layout, Input, Button } from "antd";
-import Link from "next/link";
+import { Button } from "antd";
 import { useRouter } from "next/navigation";
 
-import InitailUserData from '../../../users.json'
+import InitailUserData from "../../../users.json";
 
-import { useFormik } from "formik";
+import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { NextPage } from "next";
-const { Content } = Layout;
 
-export interface UserType {
-  id: number;
-  userName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  role: string;
-}
+import CustomInput from "@/components/CustomInput";
+import { LocalStorage } from "@/utils/getData";
+import { UserType } from "@/interfaces/user-interface";
+import { UserRole } from "@/enum/userRole.enum";
+
+const yupValidationSchema = Yup.object({
+  userName: Yup.string().max(10, "Reached the maximum 10").required("Required"),
+  email: Yup.string().email("Invalid email address").required("Required"),
+  password: Yup.string().max(20, "Reached the maximum 20").required("Required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password")], "Password must match")
+    .required("Required"),
+});
 
 const RegisterPage: NextPage = () => {
   const router = useRouter();
 
-  const formik = useFormik({
-    initialValues: {
-      id: 0,
-      userName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      role: "user",
-    },
-    validationSchema: Yup.object({
-      userName: Yup.string()
-        .max(10, "Reached the maximum 10")
-        .required("Required"),
-      email: Yup.string().email("Invalid email address").required("Required"),
-      password: Yup.string()
-        .max(20, "Reached the maximum 20")
-        .required("Required"),
-      confirmPassword: Yup.string()
-        .oneOf([Yup.ref("password")], "Password must match")
-        .required("Required"),
-    }),
-    onSubmit: (values: UserType) => {
-      handleRegister(values)
-    },
-  });
-
   const handleRegister = (values: UserType) => {
     try {
-      const storedUsers = localStorage.getItem("userData");
-
+      const getLocalStroageUser = LocalStorage().getUsers()
       let users = []
-      if (storedUsers) {
-        try {
-          const parsedUsers = JSON.parse(storedUsers)
-          users = JSON.parse(parsedUsers);
-          if (Array.isArray(users)) {
-            users = parsedUsers
-          }
-        } catch (e) {
-          console.log('Error parsing stored users: ', e)
-        }
-      }
 
-      const allUsers = [...InitailUserData, ...users]
+      if(getLocalStroageUser) {
+        try {
+          if(Array.isArray(getLocalStroageUser)){
+            users = getLocalStroageUser
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      } else {
+        users = [...InitailUserData, ...getLocalStroageUser]
+      }
 
       const newUser = {
         id: Date.now(),
@@ -75,15 +50,13 @@ const RegisterPage: NextPage = () => {
         email: values.email,
         password: values.password,
         role: values.role,
-      }
+      };
 
-      allUsers.push(newUser)
+      users.push(newUser)
 
-      console.log("user from formik: ", values);
+      localStorage.setItem("userData", JSON.stringify(users));
 
-      localStorage.setItem("userData", JSON.stringify(allUsers));
-
-      if (values.role === "user") {
+      if (values.role === UserRole.user) {
         router.push("/login");
       } else router.push("/admin");
     } catch (error: unknown) {
@@ -92,79 +65,76 @@ const RegisterPage: NextPage = () => {
   };
 
   return (
-    <Layout>
-      <Content>
-        <div className="flex-grow">
+    <Formik
+      initialValues={{
+        id: 0,
+        userName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        role: UserRole.user,
+      }}
+      validationSchema={yupValidationSchema}
+      onSubmit={(values) => {
+        handleRegister(values);
+      }}
+    >
+      {(formik) => (
+        <section className="flex-grow">
           <div className="flex justify-center items-center">
             <div className="w-[400px] shadow-xl p-10 mt-5 rounded-xl bg-[#cdd7e5]">
               <h3 className="text-3xl text-[#424b66]">Register</h3>
               <hr className="my-3" />
-
-              <form onSubmit={formik.handleSubmit}>
-                <Input
+              
+              <Form>
+                <CustomInput
+                  placeholder="Enter your username"
                   type="text"
-                  className="w-full bg-gray-200 border py-2 px-3 rounded text-lg my-2"
-                  placeholder="Enter your name"
-                  name="userName"
-                  value={formik.values.userName}
-                  onBlur={formik.handleBlur}
-                  // onChange={(e) => handleChange(e.target.name, e.target.value)}
-                  onChange={formik.handleChange}
-                  status={formik.errors.userName ? "error" : ""}
+                  field={formik.getFieldProps("userName")}
+                  form={formik}
+                  meta={{
+                    value: formik.values.userName,
+                    touched: formik.touched.userName as boolean,
+                    error: formik.errors.userName,
+                    initialTouched: formik.initialTouched.userName as boolean,
+                  }}
                 />
-                {formik.errors.userName && formik.touched.userName ? (
-                  <p className="text-red-500">{formik.errors.userName}</p>
-                ) : null}
-                <Input
-                  type="email"
-                  className="w-full bg-gray-200 border py-2 px-3 rounded text-lg my-2"
+                <CustomInput
                   placeholder="Enter your email"
-                  name="email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  status={formik.errors.email ? "error" : ""}
-                  // onChange={(e) => handleChange(e.target.name, e.target.value)}
+                  type="text"
+                  field={formik.getFieldProps("email")}
+                  form={formik}
+                  meta={{
+                    value: formik.values.email,
+                    touched: formik.touched.email as boolean,
+                    error: formik.errors.email,
+                    initialTouched: formik.initialTouched.email as boolean,
+                  }}
                 />
-                {formik.errors.email && formik.touched.email ? (
-                  <p className="text-red-500">{formik.errors.email}</p>
-                ) : null}
-                <Input
+                <CustomInput
+                  placeholder="Enter your password"
                   type="password"
-                  className="w-full bg-gray-200 border py-2 px-3 rounded text-lg my-2"
-                  placeholder="Enter your Password"
-                  value={formik.values.password}
-                  onChange={formik.handleChange}
-                  name="password"
-                  status={formik.errors.password ? "error" : ""}
-                  // onChange={(e) => handleChange(e.target.name, e.target.value)}
+                  field={formik.getFieldProps("password")}
+                  form={formik}
+                  meta={{
+                    value: formik.values.password,
+                    touched: formik.touched.password as boolean,
+                    error: formik.errors.password,
+                    initialTouched: formik.initialTouched.password as boolean,
+                  }}
                 />
-                {formik.errors.password && formik.touched.password ? (
-                  <p className="text-red-500">{formik.errors.password}</p>
-                ) : null}
-
-                <Input
+                <CustomInput
+                  placeholder="Confirm password"
                   type="password"
-                  className="w-full bg-gray-200 border py-2 px-3 rounded text-lg my-2"
-                  placeholder="Confirm your password"
-                  name="confirmPassword"
-                  value={formik.values.confirmPassword}
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  status={
-                    formik.touched.confirmPassword &&
-                    formik.errors.confirmPassword
-                      ? "error"
-                      : ""
-                  }
-                  // onChange={(e) => handleChange(e.target.name, e.target.value)}
+                  field={formik.getFieldProps("confirmPassword")}
+                  form={formik}
+                  meta={{
+                    value: formik.values.confirmPassword,
+                    touched: formik.touched.confirmPassword as boolean,
+                    error: formik.errors.confirmPassword,
+                    initialTouched: formik.initialTouched.confirmPassword as boolean,
+                  }}
                 />
-                {formik.touched.confirmPassword &&
-                formik.errors.confirmPassword ? (
-                  <p className="text-red-500">
-                    {formik.errors.confirmPassword}
-                  </p>
-                ) : null}
-
                 <Button
                   className="border py-2 px-3 rounded text-lg my-2"
                   htmlType="submit"
@@ -172,21 +142,12 @@ const RegisterPage: NextPage = () => {
                 >
                   Sign Up
                 </Button>
-                <hr className="my-3" />
-
-                <p>
-                  Already have an account? Go to{" "}
-                  <Link href="/login" className="text-blue-700 hover:underline">
-                    Login
-                  </Link>{" "}
-                  Page
-                </p>
-              </form>
+              </Form>
             </div>
           </div>
-        </div>
-      </Content>
-    </Layout>
+        </section>
+      )}
+    </Formik>
   );
 };
 

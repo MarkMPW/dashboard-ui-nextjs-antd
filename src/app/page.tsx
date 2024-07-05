@@ -3,7 +3,7 @@
 import { Typography, Layout } from "antd";
 
 const { Title } = Typography;
-const { Header, Content, Footer } = Layout;
+const { Content } = Layout;
 
 export default function Home() {
 

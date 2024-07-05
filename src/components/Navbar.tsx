@@ -1,15 +1,14 @@
-"useClient";
+"use Client";
 
 import React from "react";
 import Link from "next/link";
-import Logo from "/public/next.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../contexts/AuthContext";
 
 const Navbar: React.FC = () => {
   const route = useRouter();
-  const { currentUser, setCurrentUser, isAuth, isAuthHandler } = useAuth();
+  const { setCurrentUser, isAuth, isAuthHandler } = useAuth();
 
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
@@ -24,7 +23,7 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between items-center p-4">
           <div>
             <Link href="/">
-              <Image src={Logo} width={100} height={100} alt="NextJs Logo" />
+              <Image src='/next.svg' width={100} height={100} alt="NextJs Logo" />
             </Link>
           </div>
           {isAuth ? (

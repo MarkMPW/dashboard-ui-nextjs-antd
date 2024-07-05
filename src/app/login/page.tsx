@@ -4,28 +4,25 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-import { Input, Button, message } from "antd";
+import { Button, message } from "antd";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import { UserType } from "../register/page";
+import { UserType } from "@/interfaces/user-interface";
 import { NextPage } from "next";
 
 import InitialUserData from "../../../users.json";
 import { useAuth } from "@/contexts/AuthContext";
 import { UserRole } from "@/enums/role-enum";
+import { delayTimeout } from "@/utils/dalay";
+import CustomInput from "@/components/CustomInput";
+import { LocalStorage } from "@/utils/getData";
 
 const LoginPage: NextPage = () => {
   const router = useRouter();
-  const { setCurrentUser, isAuthHandler, isAuth } = useAuth();
-  const [loading, setLoading] = useState(false);
-
-  const failed = () => {
-    message.error({
-      content: "Fail to login!",
-    });
-  };
+  const { setCurrentUser, isAuthHandler } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -38,58 +35,58 @@ const LoginPage: NextPage = () => {
         .max(20, "Reached the maximum 20")
         .required("Required"),
     }),
-    onSubmit: async (values, { setSubmitting }) => {
-      handleLogin(values, setSubmitting);
+    onSubmit: async (values) => {
+      handleLogin(values);
     },
   });
 
-  const handleLogin = async (
-    values: { email: string; password: string },
-    setSubmitting: any
-  ) => {
-    return new Promise<void>((resolve) => {
-      try {
-        setLoading(true);
-        const userLocalData = localStorage.getItem("userData");
-        const users = userLocalData ? JSON.parse(userLocalData) : [];
-
-        const allUser = [...InitialUserData, ...users];
-
-        const findUser = allUser.find(
-          (user: UserType) =>
-            user.email === values.email && user.password === values.password
-        );
-
-        if (!findUser) {
-          // ไม่เจอ user
-          failed();
-          return;
-        }
-
-        setCurrentUser(findUser);
-        isAuthHandler(true);
-        localStorage.setItem("currentUser", JSON.stringify(findUser));
-        message.success("Login successful!", 2, () => {
-          const { role } = findUser || undefined;
-          if (role === UserRole.user) {
-            router.push("/welcome");
-          } else if (role === UserRole.admin) {
-            router.push("/admin");
-          }
-        });
-      } catch (error: unknown) {
-        console.log("Login failed: ", error);
-        failed();
-      } finally {
-        setLoading(false);
-        resolve();
-        console.log("finally");
-      }
-    }).finally(() => {
-      setSubmitting(false);
+  const failed = () => {
+    message.error({
+      content: "Fail to login!",
     });
   };
 
+  const handleLogin = async (
+    values: { email: string; password: string },
+  ) => {
+    setIsLoading(true);
+  
+    try {
+      const localStorageUser = LocalStorage().getUsers()
+  
+      const allUser = [...InitialUserData, ...localStorageUser];
+  
+      const findUser = allUser.find(
+        (user: UserType) =>
+          user.email === values.email && user.password === values.password
+      );
+  
+      if (!findUser) {
+        failed();
+        return;
+      }
+  
+      setCurrentUser(findUser);
+      isAuthHandler(true);
+      localStorage.setItem("currentUser", JSON.stringify(findUser));
+
+      message.success("Login successful!", 1, () => {
+        const { role } = findUser;
+        if (role === UserRole.user) {
+          router.push("/welcome");
+        } else if (role === UserRole.admin) {
+          router.push("/admin");
+        }
+      });
+
+    } catch (error: unknown) {
+      failed();
+    } finally {
+      await delayTimeout(1000)
+      setIsLoading(false)
+    }
+  };
+  
   return (
     <section className="flex-grow">
       <div className="flex justify-center items-center">
@@ -98,36 +95,35 @@ const LoginPage: NextPage = () => {
           <hr className="my-3" />
 
           <form onSubmit={formik.handleSubmit}>
-            <Input
-              type="text"
-              className="w-full bg-gray-200 border py-2 px-3 rounded text-lg my-2"
-              placeholder="Enter your Email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              status={formik.errors.email ? "error" : ""}
-              name="email"
+            <CustomInput 
+              type='text'
+              placeholder="Enter your email"
+              field={formik.getFieldProps('email')}
+              form={formik}
+              meta={{
+                touched: formik.touched.email as boolean,
+                error: formik.errors.email,
+                value: formik.values.email,
+                initialTouched: formik.initialTouched as boolean,
+              }}   
             />
-            {formik.errors.email && formik.touched.email ? (
-              <p className="text-red-500">{formik.errors.email}</p>
-            ) : null}
-            <Input
-              type="password"
-              className="w-full bg-gray-200 border py-2 px-3 rounded text-lg my-2"
-              placeholder="Enter your Password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              status={formik.errors.password ? "error" : ""}
-              name="password"
+            <CustomInput 
+              type='password'
+              placeholder="Enter your password"
+              field={formik.getFieldProps('password')}
+              form={formik}
+              meta={{
+                touched: formik.touched.password as boolean,
+                error: formik.errors.password,
+                value: formik.values.password,
+                initialTouched: formik.initialTouched as boolean,
+              }}
             />
-            {formik.errors.password && formik.touched.password ? (
-              <p className="text-red-500">{formik.errors.password}</p>
-            ) : null}
             <Button
               type="primary"
               size="large"
               htmlType="submit"
-              //   loading={loading}
-              disabled={formik.isSubmitting}
+              loading={isLoading}
             >
               Sign Up
             </Button>

@@ -2,12 +2,15 @@
 
 import React from "react";
 import { useRouter, usePathname } from "next/navigation";
+import type { MenuProps } from "antd";
 
 import { Menu, Layout } from "antd";
 
 const { Sider } = Layout;
 
-const items: any = [
+type MenuItem = Required<MenuProps>['items'][number];
+
+const items: MenuItem[] = [
   {
     key: "/admin",
     label: "Dashboard",

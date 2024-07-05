@@ -1,10 +1,16 @@
 interface UserType {
-  id: number;
+  id?: number;
   userName: string;
   email: string;
   password: string;
-  confirmPassword: string;
-  role: string;
+  confirmPassword?: string;
+  role?: string;
+}
+interface AllPostsType {
+  id?: number;
+  title: string;
+  imageUrl: string;
+  description: string;
 }
 
-export type { UserType };
+export type { UserType, AllPostsType};
