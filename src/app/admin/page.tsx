@@ -8,7 +8,7 @@ import { SearchOutlined, UserOutlined } from "@ant-design/icons";
 import { NextPage } from "next";
 
 import { AuthContext } from "@/contexts/AuthContext";
-import withAuthTest from "@/HOC/withAdminAuth";
+import withAdminAuth from "@/HOC/withAdminAuth";
 
 import { LocalStorage } from "@/utils/getData";
 
@@ -72,4 +72,4 @@ const AdminPage: NextPage = () => {
   );
 };
 
-export default withAuthTest(AdminPage);
+export default withAdminAuth(AdminPage);

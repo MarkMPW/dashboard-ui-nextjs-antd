@@ -3,8 +3,8 @@ import { useRouter } from 'next/navigation'
 
 import { AuthContext } from '@/contexts/AuthContext'
 
-const withAuthTest = <P extends object>(WrappedComponent: ComponentType<P>) => {
-  return(prop: P) => {
+const withAdminAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
+  const Wrapper = (props: P) => {
     const { currentUser } = useContext(AuthContext)
     const isAdmin = currentUser?.role === 'admin'
     const router = useRouter()
@@ -17,8 +17,9 @@ const withAuthTest = <P extends object>(WrappedComponent: ComponentType<P>) => {
       }
     }, [isAdmin])
 
-    return isAdmin ? <WrappedComponent {...prop}/> : null
+    return isAdmin ? <WrappedComponent {...props}/> : null
   }
+  return Wrapper
 }
 
-export default withAuthTest
+export default withAdminAuth
